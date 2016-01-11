@@ -106,9 +106,11 @@ This method initiates the module so that you could use it. It takes one *optiona
 	```
 		windowManager.init({
 			'layouts': {
-				'default': '/layouts/default.html',  // The "/" at the start will be replaced with the "appBase" value
+				'default': '/layouts/default.html',  // The "/" at the start will be replaced with the 'appBase' value
 				'secondary': '/layouts/secondary.html'
-			}
+			},
+			
+			'defaultLayout': 'secondary'
 		});
 	```
 	This of course will be effective only when the app is local, or at least the target file is stored locally. [More details on the "Layouts" feature](#class-windowmanagerlayouts)
@@ -169,7 +171,7 @@ Here's an example:
 As mentioned, beside the the setup options `BrowserWindow` offers we offer couple more:
 
 * **layout** (string) The name of the layout you want the window's content to be displayed inside.
-* **position** (string|array) This setup option sets the position of the window on the screen, you can pass the x & y coordinates as an array (ex: [300, 200]), or simply pass the position name, the available positions are: *top, right, bottom, left, topRight, topLeft, bottomRight, bottomLeft*. The default position by the way is "center".
+* **position** (string|array) This setup option sets the position of the window on the screen, **you can pass the x & y coordinates as an array (ex: [300, 200])**, or simply pass the position name, the available positions are: *top, right, bottom, left, topRight, topLeft, bottomRight, bottomLeft*. The default position by the way is "center".
 ```
     var win = windowManager.createWindow(false, false, false, false, {'position': 'bottomRight'});
 ```
@@ -336,7 +338,7 @@ Of course you can create more than one layout, and when creating a new window yo
 ```
     var win = windowManager.createNew('home', 'Welcome ... ', '/pages/welcome.html', false, {'layout': 'simple'});
     // or 
-    win.setLayout('simple');
+    win.useLayout('simple');
 ```
 To set a default layout for the whole application you simple pass its name in the initiation config
 ```
@@ -438,18 +440,20 @@ Returns the path to the application directory
 It readies the given URL for use with in the module, basically it replaces the "{appBase}" with the path to the
 application directory.
 
-### `windowManager.utils.resolvePosition( position, setup )`
-This method takes a position by name and returns the corresponding x and y coordinates, the accepted values are:
-"top", "bottom", "right", "left", "topRight", "topLeft", "bottomRight", "bottomLeft" and "center". The second
-argument is the window setup object. You probably wont be needing this method, put here it's, just in case.
+### `windowManager.utils.resolvePosition( setup )`
+This method takes a position name and returns the corresponding x & y coordinates, the accepted values are: "top", "bottom", "right", "left", "topRight", "topLeft", "bottomRight", "bottomLeft" and "center".
+* **setup** (object) The window setup object, inside which the "*position*", "*width*" and "*height*" properties must be present.
+
+You probably wont be needing this method, put here it's, just in case.
 
 ---
 
 # Class: Window
-The `Window` class is basically the whole thing, [windowManager](#class-windowmanager) is merely an access point for its instances. Whenever you use `windowManager.createNew( ... )` or `windowManager.open( ... )` you are creating a new instance of `Window`.
+> The `Window` class is basically the whole thing, [windowManager](#class-windowmanager) is merely an access point for its instances. Whenever you use `windowManager.createNew( ... )` or `windowManager.open( ... )` you are creating a new instance of `Window`.
 ```
     var window = new Window( name, title, url, setupTemplate, setup, showDevTools );
 ```
+
 **But don't try to use the above code, `Window` isn't available in your app scope**, use `windowManager.createNew/open` instead, and as you can see the arguments are the same in the 3 cases, **check out [windowManager.createNew](#createnew-name-title-url-setuptemplate-setup-showdevtools-) for more info on the arguments**.
 
 ### `Window.name` 
@@ -460,6 +464,13 @@ Stores the window setup object
 
 ### `Window.object`
 Stores the `BrowserWindow` instance created
+
+### `Window.set( prop, value )`
+Updates the window setup. You can either provide a property-value pair or pass an object to override the current setup.
+```
+    win.set('width', 300);
+    win.set({'width': 300, 'height': 250});
+```
 
 ### `open( url )`
 Opens/shows the created window.
@@ -600,6 +611,7 @@ Resizes the window to a specific width and/or height
 
 ---
 ## Final notes
+* The module is definitely is still under development, and I am always updating and fixing the code. 
 * You may find this module a bit redundant, but if you use Electron for complex multi-window projects you will probably need it.
 * I actually spent more time on writing this documentation than I spent on writing the module itself, so **PLEASE if you have any comments or suggestions of any kind write me or open an issue**.
 * **The development of this module WILL be continued**, so feel safe to use it and know I got your back ;)
@@ -609,7 +621,7 @@ Resizes the window to a specific width and/or height
     * Better documentation and code examples
 
 
-And yeah, THANKS GITHUB FOR ELECTRON, IT'S A DREAM CAME TRUE, IT'S AWESOME.
+And yeah, THANKS GITHUB FOR ELECTRON, IT'S A DREAM CAME TRUE.
 
 ---
 The MIT License (MIT)
