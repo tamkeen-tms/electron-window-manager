@@ -1,7 +1,7 @@
 
     /**
      * Hi there. Good luck with your Electron app.
-     * Please check out the module full documentation on Github.com
+     * Please check out the module full documentation on Github
      *
      * ~ zain
      * */
@@ -20,12 +20,12 @@
     /**
      * Creates a new Window instance
      *
-     * @param name [optional] The code name for the window, each window must have its unique name
+     * @param name [optional] The code name for the window, each window must have a unique name
      * @param title [optional] The window title
      * @param url [optional] The targeted page/url of the window
      * @param setupTemplate [optional] The name of the setup template you want to use with this new window
      * @param setup [optional] The setup object that will be passed to the BrowserWindow module
-     * @param showDevTools [optional] Whether to turn on the dev tools or not, false by default
+     * @param showDevTools [optional] Whether to show the dev tools or not, false by default
      * */
     var Window = function(name, title, url, setupTemplate, setup, showDevTools){
         // Check if the window already exists
@@ -43,7 +43,6 @@
         // The BrowserWindow module instance
         this.object = null;
 
-        // The window default setup, that will be passed to the BrowserWindow module
         this.setup = {
             'show': false,
             'setupTemplate': setupTemplate
@@ -56,7 +55,6 @@
         // If the setup is just the window dimensions, like '500x350'
         if(_.isString(setup) && setup.indexOf('x') >= 0){
             var dimensions = setup.split('x');
-
             setup = {
                 'width': parseInt(dimensions[0]),
                 'height': parseInt(dimensions[1])
@@ -70,6 +68,18 @@
 
         // Register the window on the window manager
         windowManager.windows[this.name] = this;
+    };
+
+    /**
+     * Updates the window setup
+     * */
+    Window.prototype.set = function(prop, value){
+        if(value){
+            this.setup[prop] = value;
+
+        }else if(_.isObject(prop)){
+            this.setup = _.extend(this.setup, prop);
+        }
     };
 
     /**
@@ -116,28 +126,17 @@
         var config = windowManager.config;
 
         // If a setup setupTemplate is provided
-        if(this.setup.setupTemplate){
+        var template = this.setup.setupTemplate || config.defaultSetupTemplate;
+        if(template && this.setup.setupTemplate !== false){
             // Get the setupTemplate
-            var setupTemplate = templates.get(this.setup.setupTemplate);
+            template = templates.get(template);
 
             // Merge with this window setup
-            if(setupTemplate){
-                this.setup = _.extend(setupTemplate, this.setup);
+            if(template){
+                this.setup = _.extend(template, this.setup);
 
             }else{
-                console.log('The setup template "' + this.setup.setupTemplate + '" wasn\'t found!');
-            }
-
-        // Default setup template ?
-        }else if(this.setup.setupTemplate !== false && config.defaultSetupTemplate){
-            var defaultTemplate = templates.get(config.defaultSetupTemplate);
-
-            // Merge with the provided setup
-            if(defaultTemplate){
-                this.setup = _.extend(defaultTemplate, this.setup);
-
-            }else{
-                console.log('The setup template "' + config.defaultSetupTemplate + '" wasn\'t found!');
+                console.log('The setup template "' + template + '" wasn\'t found!');
             }
         }
 
@@ -146,6 +145,7 @@
             if(!this.setup.title && config.defaultWindowTitle){
                 this.setup.title = config.defaultWindowTitle;
             }
+
             if(this.setup.title && config.windowsTitlePrefix && !config.defaultWindowTitle){
                 this.setup.title = config.windowsTitlePrefix + this.setup.title;
             }
@@ -160,7 +160,7 @@
 
             }else{
                 // Resolve the position into x & y coordinates
-                var xy = utils.resolvePosition(this.setup.position, this.setup);
+                var xy = utils.resolvePosition(this.setup);
                 if(xy){
                     this.setup.y = xy[1];
                     this.setup.x = xy[0];
@@ -183,6 +183,11 @@
         this.object.webContents.on('did-fail-load', function(){
             instance.down();
         });
+
+        // If the width/height not provided!
+        var bounds = this.object.getBounds();
+        if(!this.setup.width) this.setup.width = bounds.width;
+        if(!this.setup.height) this.setup.height = bounds.height;
 
         // Open the window target content/url
         if(this.setup.url){
@@ -432,21 +437,19 @@
      * "topLeft", "bottomRight", ...
      * */
     Window.prototype.move = function(x, y){
-        // If a position string was provided
-        if(_.isString(x)){
-            // If the width/height not provided!
-            if(!this.setup.width || !this.setup.height){
-                var bounds = this.object.getBounds();
-
-                this.setup.width = bounds.width;
-                this.setup.height = bounds.height;
-            }
-
-            var xy = utils.resolvePosition(x, this.setup);
-            if(xy) x = xy[0]; y = xy[1];
-        }
-
+        // Get the window bounds first
         var bounds = this.object.getBounds();
+
+        // If a position name was provided
+        if(_.isString(x)){
+            this.setup.position = x;
+            var xy = utils.resolvePosition(this.setup);
+
+            if(xy){
+                x = xy[0];
+                y = xy[1]
+            }
+        }
 
         // Set the bounds
         this.object.setBounds({
@@ -544,14 +547,13 @@
         },
 
         /**
-         * Resolves a position name into x & y coordinates. The available values are: topLeft, topRight, bottomLeft,
-         * bottomRight. The default position for a window is the center
-         * @param position The position name
+         * Resolves a position name into x & y coordinates.
          * @param setup The window setup object
          * */
-        'resolvePosition': function(position, setup){
+        'resolvePosition': function(setup){
             var screen = require('screen'),
                 screenSize = screen.getPrimaryDisplay().workAreaSize,
+                position = setup.position,
                 x = 0, y = 0,
                 positionMargin = 15,
                 windowWidth = setup.width,
