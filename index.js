@@ -412,9 +412,10 @@
 
     /**
      * Toggles developer tools
+     * @param detached [optional] Whether to open the dev tools in a separate window or not
      * */
-    Window.prototype.toggleDevTools = function(){
-        this.object.toggleDevTools();
+    Window.prototype.toggleDevTools = function(detached){
+        this.object.toggleDevTools({detached: detached || false});
 
         return this;
     };
