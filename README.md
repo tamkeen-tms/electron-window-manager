@@ -579,8 +579,9 @@ Restores the window back in focus
 ### `toFullScreen()`
 Takes the window to fullscreen
 
-### `toggleDevTools()`
+### `toggleDevTools( detached )`
 Toggles the developer tools. **By default, and when the `devMode` is on you can open the developer tools by pressing `CTRL + F12` on any window.**
+* **detached** (boolean) [optioanl] Whether to open the devTools in a separate window or not
 
 ### `registerShortcut( accelerator, callback )`
 Registers a keyboard shortcut on the window
