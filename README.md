@@ -591,7 +591,7 @@ Registers a keyboard shortcut on the window
     });
 
 ```
-This feature is available thanks to the  [electron-loaclshortcut](https://github.com/parro-it/electron-localshortcut) module. Here's more details on the [shortcuts codes](https://github.com/atom/electron/blob/master/docs/api/accelerator.md). The module itself can be access through `windowManager.shortcuts` in case you wanted to use more of it, to globally-register a new shortcut or something.
+This feature is available thanks to the  [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) module. Here's more details on the [shortcuts codes](https://github.com/atom/electron/blob/master/docs/api/accelerator.md). The module itself can be access through `windowManager.shortcuts` in case you wanted to use more of it, to globally-register a new shortcut or something.
 ```
     windowManager.shortcuts.unregisterAll();
 ```
