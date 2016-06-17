@@ -472,6 +472,21 @@ Updates the window setup. You can either provide a property-value pair or pass a
     win.set({'width': 300, 'height': 250});
 ```
 
+### `create( url )`
+Creates the browserwindow instance.
+```
+    var win1 = windowManager.createNew(false, false, 'win1.html');
+    win1.create();
+    win1.object.on(...);
+    win1.open();
+    
+    // or 
+    var win2 = windowManager.createNew();
+    win2.create('win2.html');
+    win2.open();
+
+```
+
 ### `open( url )`
 Opens/shows the created window.
 ```

@@ -106,16 +106,10 @@
     };
 
     /**
-     * Open the created window instance
+     * Created window instance
      * @param url [optional] The window target URL in case you didn't provide it in the constructor
      * */
-    Window.prototype.open = function(url){
-        // If the window is already created
-        if(_.isObject(this.object)){
-            this.focus();
-            return false;
-        }
-
+    Window.prototype.create = function(url) {
         var instance = this;
 
         if(url){
@@ -211,6 +205,20 @@
             instance.object = null;
             instance = null;
         });
+    };
+        /**
+     * Open the created window instance
+     * @param url [optional] The window target URL in case you didn't provide it in the constructor
+     * */
+    Window.prototype.open = function(url){
+        // If the window is already created
+        if(_.isObject(this.object)){
+            this.focus();
+            return false;
+        }
+
+        // Create the window
+        this.create(url);
 
         // Show the window
         this.object.show();
