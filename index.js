@@ -206,7 +206,8 @@
             instance = null;
         });
     };
-        /**
+    
+    /**
      * Open the created window instance
      * @param url [optional] The window target URL in case you didn't provide it in the constructor
      * */
