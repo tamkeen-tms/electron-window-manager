@@ -210,8 +210,9 @@
     /**
      * Open the created window instance
      * @param url [optional] The window target URL in case you didn't provide it in the constructor
+     * @param hide [optional] Whether to show or hide the newely-created window, false by default
      * */
-    Window.prototype.open = function(url){
+    Window.prototype.open = function(url, hide){
         // If the window is already created
         if(_.isObject(this.object)){
             this.focus();
@@ -222,7 +223,9 @@
         this.create(url);
 
         // Show the window
-        this.object.show();
+        if(!hide){
+            this.object.show();
+        }
     };
 
     /**
