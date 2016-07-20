@@ -2,7 +2,7 @@
 
 > A NodeJs module for [Electron](http://electron.atom.io/) (Atom Shell, previously) that will help you create, control, manage and connect your application windows very easily.
 
-Most of the applications created using Electron are one-window applications, I am not sure why, but that's the case, maybe because we - as web developers - are used to building inside one window (that of the browser). But, if you are to build a multi-window Electron application then you may need to have a look at this module.
+Most of the applications created using Electron are one-window applications, I am not sure why, but that's the case, maybe because we - as web developers - are used to building inside one window (that of the browser). But, if you are to build a multi-window Electron application than you may need to have a look at this module.
 
 
 * [Features](#features)
@@ -38,7 +38,7 @@ Simply type the following command in the terminal, inside the application folder
 npm install --save electron-window-manager
 ```
 
-Then, inside the application main.js *(or whatever you chosen for your application)*, require the module, like this:
+Then, inside the application main.js *(or whatever you've chosen for your application)*, require the module, like this:
 ```
 var windowManager = require('electron-window-manager');
 ```
@@ -48,18 +48,18 @@ Now, **this module can be used in both the "Main" and the "Renderer" processes o
 **On the Main process you can use it like this**:
 ```
 	const electron = require('electron');
-    const application = electron.application;
+    const app = electron.app;
     const windowManager = require('electron-window-manager');
 
     // When the application is ready
-    application.on('ready', function(){
+    app.on('ready', function(){
 		windowManager.init( ... );
     	// Open a window
         windowManager.open('home', 'Welcome ...', '/home.html');
     });
 
 ```
-**And on the Renderer process** (inside the created window), you can use it like this:
+**And in the Renderer process** (inside the created window), you can use it like this:
 ```
 <script>
 	var remote = require('remote');
@@ -77,11 +77,11 @@ Please go ahead and check out the module code and see for yourself how it all wo
 
 ## How it works 
 * **This module is basically a wrapper for Electron's `BrowserWindow`** module, so it's definitely a good start to check out Electron's [documentation for BrowserWindow](http://electron.atom.io/docs/v0.36.0/api/browser-window/).
-* In its core, this module **works as a holder for the `BrowserWindow` instances created, each instance is stored by a unique name**. So you could later on call any window by name. 
+* At its core, this module **works as a holder for the `BrowserWindow` instances created, each instance is stored by a unique name**. So you could later on call any window by name. 
 * **Each `BrowserWindow` instance is created inside the ["Window"](#class-window) class**, which in a way extends and adds more functionalities to it. 
 * When creating a new window you are required to provide a basic SETUP for it, stuff like the width, height, title, url ... etc. The setup options `BrowserWindow` offers are plenty, and this module adds couple more. **If some/many of the windows share the same setup, you can simply create a ["Setup Template"](#class-windowmanagertemplates) and pass this template (by name) to the window in the making to apply the setup**.
-* After a window is created you can change its content, resize it, move it, take it to full screen, ... pretty much anything you may need, even you can execute JS code on it, from another window ... cool ha!
-* A development-mode is on by default, until you finish developing the application and set it off. **The development mode will make debugging  a bit easier; you will be able to reload ANY window just by pressing ``` CTRL + R```, also you will be able to toggle the development tools Chrome offers just by pressing ```CTRL + F12```**, for any window and without any pre-configuration. The developer tools could be turned on by default for a window just by passing *"showDevTools: true"* in the window setup, or even by calling the method *showDevTools()* on the window object.
+* After a window is created you can change its content, resize it, move it, full screen it, ... pretty much anything you may need, even you can execute JS code on it, from another window ... cool ha!
+* A development-mode is on by default, until you finish developing the application and set it off. **The development mode will make debugging a bit easier; you will be able to reload ANY window just by pressing ``` CTRL + R```, also you will be able to toggle the development tools Chrome offers just by pressing ```CTRL + F12```**, for any window and without any pre-configuration. The developer tools can be turned on by default for a window just by passing *"showDevTools: true"* in the window setup, or even by calling the method *showDevTools()* on the window object.
 
 ---
 # API
@@ -102,7 +102,7 @@ This method initiates the module so that you could use it. It takes one *optiona
 * **config**
 	* **appBase** (string): The path to the application base, whether it's local or remote. **By default the local path to the application directory is used**.
 	* **devMode** (boolean): Sets whether the development mode is on or off, it's on by default.
-	* **layouts** (object): As mentioned, this module will help you use  layout(s) for the content of your windows. This option is where you can pass a list of the layout file(s), each under a specific name. Here's an example:
+	* **layouts** (object): As mentioned, this module will help you use layout(s) for the content of your windows. This option is where you can pass a list of the layout file(s), each under a specific name. Here's an example:
 	```
 		windowManager.init({
 			'layouts': {
@@ -256,7 +256,7 @@ This method simply takes two values, the first is the one that goes when the dev
 ## Class: windowManager.templates
 When creating a new window you will need to provide a basic setup; things like the width, height and of course the window URL (the targeted content). The available setup options are plenty, and in most cases you will find yourself repeating it with each window you create. **The "Setup Templates" feature will help you make presets of the setup properties you use and name them, and later when creating a new window you will just pass the template name and the associated setup will be applied.**
 ```
-    windowManager.templates.set('samll', {
+    windowManager.templates.set('small', {
         'width': 600,
         'height': 350,
         'resizable': true,
@@ -430,8 +430,7 @@ This feature is basically a wrapper for NodeJs native EventEmitter class, which 
 	windowManager.eventEmitter.addListener( ... );
 ```
 ## Class: windowManager.utils
-This object holds a couple of utility method, for module internal use, and for you if you need it. I am probably
-will be adding more methods to this class later.
+This object holds a couple of utility method, for module internal use, and for you if you need it. I will likely add more methods to this class later.
 
 ### `windowManager.utils.getAppLocalPath()`
 Returns the path to the application directory
@@ -444,7 +443,7 @@ application directory.
 This method takes a position name and returns the corresponding x & y coordinates, the accepted values are: "top", "bottom", "right", "left", "topRight", "topLeft", "bottomRight", "bottomLeft" and "center".
 * **setup** (object) The window setup object, inside which the "*position*", "*width*" and "*height*" properties must be present.
 
-You probably wont be needing this method, put here it's, just in case.
+You probably wont be needing this method, but it's here just in case.
 
 ---
 
@@ -627,7 +626,7 @@ Resizes the window to a specific width and/or height
 
 ---
 ## Final notes
-* The module is definitely is still under development, and I am always updating and fixing the code. 
+* The module is definitely still under development, and I am always updating and fixing the code. 
 * You may find this module a bit redundant, but if you use Electron for complex multi-window projects you will probably need it.
 * I actually spent more time on writing this documentation than I spent on writing the module itself, so **PLEASE if you have any comments or suggestions of any kind write me or open an issue**.
 * **The development of this module WILL be continued**, so feel safe to use it and know I got your back ;)
