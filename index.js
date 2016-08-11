@@ -206,7 +206,7 @@
             instance = null;
         });
     };
-    
+
     /**
      * Open the created window instance
      * @param url [optional] The window target URL in case you didn't provide it in the constructor
@@ -564,11 +564,11 @@
          * @param setup The window setup object
          * */
         'resolvePosition': function(setup){
-            var screen = require('screen'),
+            var screen = Electron.screen,
                 screenSize = screen.getPrimaryDisplay().workAreaSize,
                 position = setup.position,
                 x = 0, y = 0,
-                positionMargin = 15,
+                positionMargin = 0,
                 windowWidth = setup.width,
                 windowHeight = setup.height;
 
@@ -595,57 +595,95 @@
             }
 
             // Compensate for the frames
-            if(!setup.frame || setup.frame === true){
-                // TODO: theses values doesn't seem to fit with all of the positions, fix it
-                windowWidth += 15;
-                windowHeight += 60;
-            }
+          if (setup.frame === true) {
+              switch (position) {
+                  case 'left':
+                      break;
 
-            switch(position){
-                case 'left':
-                    y = Math.floor( ( screenSize.height - windowHeight) / 2 );
-                    x = positionMargin;
-                    break;
+                  case 'right':
+                      windowWidth += 8;
+                      break;
 
-                case 'right':
-                    y = Math.floor( ( screenSize.height - windowHeight) / 2 );
-                    x = ( screenSize.width - windowWidth) - positionMargin;
-                    break;
+                  case 'top':
+                      windowWidth += 13;
+                      break;
 
-                case 'top':
-                    y = positionMargin;
-                    x = Math.floor( ( screenSize.width - windowWidth ) / 2 );
-                    break;
+                  case 'bottom':
+                      windowHeight += 50;
+                      windowWidth += 13;
+                      break;
 
-                case 'bottom':
-                    y = ( screenSize.height - windowHeight ) - positionMargin;
-                    x = Math.floor( ( screenSize.width - windowWidth ) / 2 );
-                    break;
+                  case 'leftTop':
+                  case 'topLeft':
+                      windowWidth += 0;
+                      windowHeight += 50;
+                      break;
 
-                case 'leftTop':
-                case 'topLeft':
-                    y = positionMargin;
-                    x = positionMargin;
-                    break;
+                  case 'rightTop':
+                  case 'topRight':
+                      windowWidth += 8;
+                      windowHeight += 50;
+                      break;
 
-                case 'rightTop':
-                case 'topRight':
-                    y = positionMargin;
-                    x = ( screenSize.width - windowWidth ) - positionMargin;
-                    break;
+                  case 'leftBottom':
+                  case 'bottomLeft':
+                      windowWidth -= 0;
+                      windowHeight += 50;
+                      break;
 
-                case 'leftBottom':
-                case 'bottomLeft':
-                    y = ( screenSize.height - windowHeight ) - positionMargin;
-                    x = positionMargin;
-                    break;
+                  case 'rightBottom':
+                  case 'bottomRight':
+                      windowWidth += 8;
+                      windowHeight += 50;
+                      break;
+              }
+          }
 
-                case 'rightBottom':
-                case 'bottomRight':
-                    y = ( screenSize.height - windowHeight ) - positionMargin;
-                    x = ( screenSize.width - windowWidth ) - positionMargin;
-                    break;
-            }
+              switch (position) {
+              case 'left':
+                  y = Math.floor((screenSize.height - windowHeight) / 2);
+                  x = positionMargin - 8;
+                  break;
+
+              case 'right':
+                  y = Math.floor((screenSize.height - windowHeight) / 2);
+                  x = (screenSize.width - windowWidth) - positionMargin;
+                  break;
+
+              case 'top':
+                  y = positionMargin;
+                  x = Math.floor((screenSize.width - windowWidth) / 2);
+                  break;
+
+              case 'bottom':
+                  y = (screenSize.height - windowHeight) - positionMargin;
+                  x = Math.floor((screenSize.width - windowWidth) / 2);
+                  break;
+
+              case 'leftTop':
+              case 'topLeft':
+                  y = positionMargin;
+                  x = positionMargin - 8;
+                  break;
+
+              case 'rightTop':
+              case 'topRight':
+                  y = positionMargin;
+                  x = (screenSize.width - windowWidth) - positionMargin;
+                  break;
+
+              case 'leftBottom':
+              case 'bottomLeft':
+                  y = (screenSize.height - windowHeight) - positionMargin;
+                  x = positionMargin - 8;
+                  break;
+
+              case 'rightBottom':
+              case 'bottomRight':
+                  y = (screenSize.height - windowHeight) - positionMargin;
+                  x = (screenSize.width - windowWidth) - positionMargin;
+                  break;
+          }
 
             return [x, y];
         }
