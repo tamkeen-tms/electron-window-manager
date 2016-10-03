@@ -188,6 +188,11 @@
             this.loadURL(this.setup.url);
         }
 
+        // Set the window menu (null is valid to not have a menu at all)
+        if(this.setup.menu !== undefined){
+            this.object.setMenu(this.setup.menu);
+        }
+
         // Show the dev tools ?
         if(this.setup.showDevTools === true){
             // Show the dev tools
