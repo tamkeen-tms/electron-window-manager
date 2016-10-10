@@ -254,7 +254,7 @@ This method simply takes two values, the first is the one that goes when the dev
 ```
 
 ## Class: windowManager.templates
-When creating a new window you will need to provide a basic setup; things like the width, height and of course the window URL (the targeted content). The available setup options are plenty, and in most cases you will find yourself repeating it with each window you create. **The "Setup Templates" feature will help you make presets of the setup properties you use and name them, and later when creating a new window you will just pass the template name and the associated setup will be applied.**
+When creating a new window you will need to provide a basic setup; things like the width, height and the window URL (the targeted content). The available setup options are plenty, and in most cases you will find yourself repeating it with each window you create. **The "Setup Templates" feature will help you make presets of the setup properties you use and name them, and later when creating a new window you will just pass the template name and the associated setup will be applied.**
 ```
     windowManager.templates.set('small', {
         'width': 600,
@@ -263,13 +263,30 @@ When creating a new window you will need to provide a basic setup; things like t
         'layout': 'classy',
         'showDevTools': true,
         'title': 'App name, for small windows!', // Yeah, even the window title!
-        'onLoadFailure': function(){ ... }
+        'onLoadFailure': function(){ ... },
+        'menu': { // Sets the window menu. Set to null for a window without a menu!
+			label: 'File',
+			submenu: [
+				{
+					label: 'New',
+					accelerator: 'CmdOrCtrl+N',
+					role: 'new',
+					click: function(){ ... }
+				},
+				{
+					label: 'Open',
+					accelerator: 'CmdOrCtrl+O',
+					role: 'open',
+					click: function(){ ... }
+				}
+			]
+		}
     });
     
     windowManager.open(false, false, 'welcom.html', 'small');
     windowManager.open(false, false, 'byebye.html', 'small');
 ```
-You of course can set a default template for all the windows to inherit
+You can set a default template for all the windows to inherit
 ```
     windowManager.init({
         'defaultSetupTemplate': 'small'
@@ -281,7 +298,7 @@ You can override this option for a specific window by passing FALSE as the setup
 ```
     windowManager.open('home', 'Welcome', '/pages/welcome.html', FALSE);
 ```
-**If you wont ignore the default setup template but need to omit the argument just pass null!**
+**Pass null to explicitly define the template in the next parameter!**
 ```
     windowManager.open('home', 'Welcome', '/pages/welcome.html', null, { ... });
 ```
