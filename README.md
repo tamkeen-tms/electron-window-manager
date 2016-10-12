@@ -2,7 +2,7 @@
 
 > A NodeJs module for [Electron](http://electron.atom.io/) (Atom Shell, previously) that will help you create, control, manage and connect your application windows very easily.
 
-Most of the applications created using Electron are one-window applications, I am not sure why, but that's the case, maybe because we - as web developers - are used to building inside one window (that of the browser). But, if you are to build a multi-window Electron application than you may need to have a look at this module.
+Most of the applications created using Electron are one-window applications. Why only one? Maybe because we as web developers are used to building only inside the browser. But if you are to build a multi-window Electron application then you may want to have a look at this package module.
 
 
 * [Features](#features)
@@ -189,7 +189,7 @@ If you don't set this a default callback will handle it, by showing a global "No
 
 
 ### `open( name, title, url, setupTemplate, setup, showDevTools )`
-This is the same as the `createNew` method, except that it opens the window directly
+This is the same as the `createNew` method, except that it opens the window directly. Returns a [Window Object](#class-window) on successfully opening a window.
 
 ### `importList( file )`
 Using this method you can create more than one window instance, with the setup information retrieved from a JSON file. You will use it like this:
@@ -238,9 +238,23 @@ Closes all the windows created by this module
 ### `closeAllExcept( name )`
 Closes all the window, except for one, the one you pass its name
 
-### `minimize( name )`
-Minimizes a window, by its name
+### `maximize( [ name ] )`
+Maximizes a window. If name is specified it will target the named window. If left out it will target the currently focused window. If the window is already maximized it will restore.
 ```
+	// Maximize focused window. Works well for window button functionality.
+	windowManager.maximize();
+
+	// Target window named 'help'
+	windowManager.maximize('help');
+```
+
+### `minimize( [ name ] )`
+Minimizes a window. If name is specified it will target the named window. If left out it will target the currently focused window.
+```
+	// Minimize focused window. Works well for window button functionality.
+	windowManager.minimize();
+
+	// Target window named 'help'
 	windowManager.minimize('help');
 ```
 
@@ -450,7 +464,7 @@ This feature is basically a wrapper for NodeJs native EventEmitter class, which 
 This object holds a couple of utility method, for module internal use, and for you if you need it. I will likely add more methods to this class later.
 
 ### `windowManager.utils.getAppLocalPath()`
-Returns the path to the application directory
+Returns the path to the application directory.
 
 ### `windowManager.utils.readyURL( url )`
 It readies the given URL for use with in the module, basically it replaces the "{appBase}" with the path to the
@@ -473,13 +487,13 @@ You probably wont be needing this method, but it's here just in case.
 **But don't try to use the above code, `Window` isn't available in your app scope**, use `windowManager.createNew/open` instead, and as you can see the arguments are the same in the 3 cases, **check out [windowManager.createNew](#createnew-name-title-url-setuptemplate-setup-showdevtools-) for more info on the arguments**.
 
 ### `Window.name` 
-Stores the widnow name
+Stores the widnow name.
 
 ### `Window.setup` 
-Stores the window setup object
+Stores the window setup object.
 
 ### `Window.object`
-Stores the `BrowserWindow` instance created
+Stores the `BrowserWindow` instance created.
 
 ### `Window.set( prop, value )`
 Updates the window setup. You can either provide a property-value pair or pass an object to override the current setup.
@@ -516,10 +530,10 @@ Opens/shows the created window.
 ```
 
 ### `focus()`
-Makes the window under focus
+Makes the window under focus.
 
 ### `useLayout( name )`
-Sets the layout to use in the window, by name
+Sets the layout to use in the window, by name.
 ```
     var window = window.createNew( ... );
     window.useLayout('classy');
@@ -527,7 +541,7 @@ Sets the layout to use in the window, by name
 ```
 
 ### `setURL( url )`
-Sets the target URL for the window, to open a URL *after* the window is open use `loadURL()`
+Sets the target URL for the window, to open a URL *after* the window is open use `loadURL()`.
 
 ### `applySetupTemplate( name )`
 Sets the setup template to use, by name.
@@ -553,7 +567,7 @@ The same way you would open a url using any browser. Now, to make things easier 
 ```
 
 ### `html( code, options )`
-It simply sets the HTML code of the window, instead of loading a url
+It simply sets the HTML code of the window, instead of loading a url.
 ```
     win.html('<h3> Electron is AWESOME </h3>');
 ```
@@ -578,7 +592,7 @@ Reloads the URL of the window, if TRUE is passed the page will be reloaded with 
 ```
 
 ### `currentURL()`
-Returns the URL open inside the window
+Returns the URL open inside the window.
 
 ### `onReady( withTheDomReady, callback )`
 Registers a callback that triggers when the page is ready. If you pass TRUE for the `withTheDomReady` argument the callback will trigger only when the DOM is ready, and not before.
@@ -589,7 +603,7 @@ Registers a callback that triggers when the page is ready. If you pass TRUE for 
 ```
 
 ### `execute( code )`
-Executes JavaScript code on the window content
+Executes JavaScript code on the window content.
 ```
     win.execute(' alert(" Hi! ") ');
 ```
@@ -599,16 +613,19 @@ Goes back to the previous page, Electron is a browser after all!
 
 
 ### `close()`
-Closes the window
+Closes the window.
+
+### `maximize()`
+Maximizes the window. Restores if already maximized.
 
 ### `minimize()`
-Minimizes the window
+Minimizes the window.
 
 ### `restore()`
-Restores the window back in focus
+Restores the window back in focus.
 
 ### `toFullScreen()`
-Takes the window to fullscreen
+Takes the window to fullscreen.
 
 ### `toggleDevTools( detached )`
 Toggles the developer tools. **By default, and when the `devMode` is on you can open the developer tools by pressing `CTRL + F12` on any window.**

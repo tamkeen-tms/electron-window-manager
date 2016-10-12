@@ -410,6 +410,16 @@
     };
 
     /**
+     * Maximizes/Unmaximizes the window
+     * */
+    Window.prototype.maximize = function(){
+        if(this.object.isMaximized()) this.object.restore();
+        else this.object.maximize();
+
+        return this;
+    };
+
+    /**
      * Restore the window into focus
      * */
     Window.prototype.restore = function(){
@@ -863,6 +873,7 @@
         'open': function(name, title, content, setupTemplate, setup, showDevTools){
             var window = this.createNew(name, title, content, setupTemplate, setup, showDevTools);
             if(window) window.open();
+            return window;
         },
 
         /**
@@ -964,10 +975,19 @@
         },
 
         /**
+         * Maximize a window by name
+         * */
+        'maximize': function(name){
+            var win = (name) ? this.get(name) : this.getCurrent();
+            win.maximize();
+        },
+
+        /**
          * Minimize a window by name
          * */
         'minimize': function(name){
-            this.get(name).object.minimize();
+            var win = (name) ? this.get(name) : this.getCurrent();
+            win.minimize();
         },
 
         /**
