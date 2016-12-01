@@ -217,6 +217,13 @@ Returns the `window` instance of the specified window
 	win.resize(300, 200).restore();
 ```
 
+### `getById( id )`
+Returns the `window` instance of the specified window by BrowserWindow instance's id attribute
+```
+	var win = windowManager.getById(1);
+	win.close();
+```
+
 ### `getCurrent()`
 Returns the `Window` instance of the currently-under-focus window
 ```

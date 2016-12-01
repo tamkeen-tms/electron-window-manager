@@ -899,20 +899,26 @@
         },
 
         /**
+         * Get a window instance, by BrowserWindow instance id
+         */
+        getById: function(id) {
+            var instance;
+            _.each(this.windows, function(window){
+                if(window.object.id === id){
+                    instance = window;
+                }
+            });
+            return instance;
+        },
+
+        /**
          * Fetches the currently-under-focus window
          * */
         'getCurrent': function(){
             var thisWindow = BrowserWindow.getFocusedWindow();
             if(!thisWindow) return false;
 
-            var current;
-            _.each(this.windows, function(window){
-                if(window.object.id == thisWindow.id){
-                    current = window;
-                }
-            });
-
-            return current;
+            return this.getById(thisWindow.object.id);
         },
 
         /**
