@@ -1059,12 +1059,33 @@
              * @param event The name of the event
              * @param callback The callback to trigger, this callback will be given the data passed (if any), and
              * the name of the targeted window and finally the name of the window that triggered/emitted the event
+             * @return the handler that add into the event listeners array
              * */
             'on': function(event, callback){
+                let id =  windowManager.eventEmitter.listenerCount(event);
+
                 windowManager.eventEmitter.addListener(event, function(event){
                     callback.call(null, event.data, event.target, event.emittedBy);
                 });
+
+                return windowManager.eventEmitter.listeners(event)[id];
             },
+
+            /**
+             * An alias of windowManger.bridge.on
+             */
+            'addListener': windowManager.bridge.on,
+
+            /**
+             * Remove a event listener returned by windowManger.bridge.on
+             * or windowManager.bridge.addListener
+             * @param event The name of the event
+             * @param handler the listen handler returned by
+             *        windowManager.bridge.on or windowManager.bridge.on
+             */
+            'removeListener': function(event, handler) {
+                windowManager.eventEmitter.removeListener(event, handler);
+            }
 
             /**
              * Emits an event
