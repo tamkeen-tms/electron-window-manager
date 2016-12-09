@@ -217,6 +217,13 @@ Returns the `window` instance of the specified window
 	win.resize(300, 200).restore();
 ```
 
+### `getById( id )`
+Returns the `window` instance of the specified window by BrowserWindow instance's id attribute
+```
+	var win = windowManager.getById(1);
+	win.close();
+```
+
 ### `getCurrent()`
 Returns the `Window` instance of the currently-under-focus window
 ```
@@ -432,13 +439,16 @@ This feature is available using [WatchJS](https://github.com/melanke/Watch.JS), 
 Here's an example:
 ```
 	// On window "home"
-	windowManager.bridge.on('new_chat_message', function(event){
+	let handler = windowManager.bridge.on('new_chat_message', function(event){
 		...
 	});
 	
 	// On window "chats"
 	windowManager.bridge.emit('new_chat_message', {'message': ' ... '});
-	
+
+    // On window "home"
+    windowManager.bridge.removeListener('new_chat_message', handler);
+
 ```
 
 ### `windowManager.bridge.emit( event, data, target )`
@@ -448,7 +458,8 @@ This method emits an event to whatever page listening for it
 * **target** [optional] The name of the targeted. In case you are targeting a specific window.
 
 ### `windowManager.bridge.on( event, callback )`
-This method adds a listener for a specific `event`, and whenever this event is triggered the `callback` will be called.
+This method adds a listener for a specific `event`, and whenever this event is triggered the `callback` will be called,
+and return the handler added into the `event` listeners array.
 * **event** The name of the event the window will be watching for
 * **callback** The callback to call when the event is emitted. This call back will be passed 1 parameters with the following properties:
 	* **event** The event name
@@ -460,6 +471,21 @@ This feature is basically a wrapper for NodeJs native EventEmitter class, which 
 ```
 	windowManager.eventEmitter.addListener( ... );
 ```
+
+### `windowManager.bridge.addListener( event, callback )`
+This method is the alias of `windowManager.brider.on`
+
+### `windowManager.bridge.removeListener (event, handler )`
+This method remove the listener returned by `windowManager.bridge.on` or `windowManager.bridge.addListener`
+* **event** The event name
+* **handler** the handler returned by `windowManager.bridge.on` or `windowManager.bridge.addListener`
+
+This feature is basically a wrapper for NodeJs native EventEmitter class, Check it the [docs](https://nodejs.org/api/events.html#events_class_eventemitter) for extra knowledge about the subject.
+
+```
+    windowManager.eventEmitter.addListener( ... );
+```
+
 ## Class: windowManager.utils
 This object holds a couple of utility method, for module internal use, and for you if you need it. I will likely add more methods to this class later.
 
