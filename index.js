@@ -1072,11 +1072,6 @@
             },
 
             /**
-             * An alias of windowManger.bridge.on
-             */
-            'addListener': windowManager.bridge.on,
-
-            /**
              * Remove a event listener returned by windowManger.bridge.on
              * or windowManager.bridge.addListener
              * @param event The name of the event
@@ -1085,7 +1080,7 @@
              */
             'removeListener': function(event, handler) {
                 windowManager.eventEmitter.removeListener(event, handler);
-            }
+            },
 
             /**
              * Emits an event
