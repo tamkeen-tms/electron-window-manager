@@ -210,6 +210,8 @@
             instance.object = null;
             instance = null;
         });
+		
+		return this;
     };
 
     /**
@@ -348,7 +350,7 @@
      * Returns the url of the current page inside the window
      * */
     Window.prototype.currentURL = function(){
-        return this.content().getUrl();
+        return this.content().getURL();
     };
 
     /**
