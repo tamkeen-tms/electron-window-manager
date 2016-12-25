@@ -701,4 +701,4 @@ And yeah, THANKS GITHUB FOR ELECTRON, IT'S A DREAM CAME TRUE.
 ---
 The MIT License (MIT)
 
-Copyright (c) 2015 Ahmed Zain <tamkeenlms@gmail.com>
+Copyright (c) 2015 <tamkeenlms@gmail.com>
