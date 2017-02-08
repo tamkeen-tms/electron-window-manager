@@ -17,7 +17,7 @@
     const Shortcuts = require('electron-localshortcut');
     const UrlPath = require('url');
     const DirPath = require('path');
-    const Cheerio = require('cheerio');
+    const Handlebars = require('handlebars');
     const _ = require('underscore');
 
     /**
@@ -296,18 +296,54 @@
 
                     // Get the final body
                     content = layoutCode.replace('{{content}}', content);
-                    var htmlCheerio = Cheerio.load(content);
-                    var htmlBody = htmlCheerio('body');
 
-                    // Load the final output
-                    // instance.html(content, options);
+                    var data = {
+                      "assets": Application.getAppPath(),
+                      "appBase": Application.getAppPath()
+                    };
 
-                    instance.content().loadURL(layoutUrl, options);
-                    instance.object.webContents.on('dom-ready', function(e){
-                      e.preventDefault();
-                      var test = htmlBody.html().replace(/\s{2,}/g, '').replace(/\//gi, '\\\/').replace(/"/g, '\\\'');
-                      instance.object.webContents.executeJavaScript("$('body').html(\"" + test  + "\")");
-                    })
+                    var template = Handlebars.compile(content);
+                    var html = template(data);
+                    var generatedUrl = DirPath.basename(url);
+
+                    FileSystem.writeFile('layouts/compiled/' + generatedUrl, html, (error) => {
+                      if(error){
+                          console.log('Can not find the he targeted page :' + error);
+                          // Take the page down!
+                          instance.down();
+                          return false;
+                      }
+
+                      instance.content().webContents.on('close', function(e){
+                          e.preventDefault();
+                          console.log('closing page');
+                          var deleteUrl = instance.content().getURL().replace('file://', '');
+                          deleteUrl = deleteUrl.replace(/#.*$/g, '');
+
+                          FileSystem.exists(deleteUrl, function(exists) {
+                                if(exists) {
+                                  // File exists deletings
+                                  FileSystem.unlink(deleteUrl,function(error){
+                                      if(error){
+                                            console.log("An error ocurred updating the file" + error.message);
+                                            return;
+                                        }
+                                    console.log("File succesfully deleted");
+                                  });
+                                } else {
+                                   console.log("This file doesn't exist, cannot delete " + deleteUrl);
+                                }
+                          });
+                      });
+
+                      instance.content().loadURL(UrlPath.format({
+                        pathname: DirPath.join(utils.getAppLocalPath(), 'layouts/compiled/' + generatedUrl),
+                        protocol: 'file:',
+                        slashes: true
+                      }), options);
+
+                    });
+
                 });
             });
 
