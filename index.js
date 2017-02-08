@@ -15,6 +15,9 @@
     const FileSystem = require('fs');
     const WatchJS = require('melanke-watchjs');
     const Shortcuts = require('electron-localshortcut');
+    const UrlPath = require('url');
+    const DirPath = require('path');
+    const Cheerio = require('cheerio');
     const _ = require('underscore');
 
     /**
@@ -210,7 +213,7 @@
             instance.object = null;
             instance = null;
         });
-		
+
 		return this;
     };
 
@@ -262,7 +265,12 @@
         }
 
         if(layout && layoutFile && url.substring(0, 4) != 'http'){
-            url = url.replace('file://', '');
+            var layoutPath = layoutFile.replace('file://', '');
+            var layoutUrl = UrlPath.format({
+              pathname: DirPath.join(layoutPath),
+              protocol: 'file:',
+              slashes: true
+            })
 
             // Load the the layout first
             FileSystem.readFile(layoutFile, 'utf-8', function(error, layoutCode){
@@ -288,9 +296,18 @@
 
                     // Get the final body
                     content = layoutCode.replace('{{content}}', content);
+                    var htmlCheerio = Cheerio.load(content);
+                    var htmlBody = htmlCheerio('body');
 
                     // Load the final output
-                    instance.html(content, options);
+                    // instance.html(content, options);
+
+                    instance.content().loadURL(layoutUrl, options);
+                    instance.object.webContents.on('dom-ready', function(e){
+                      e.preventDefault();
+                      var test = htmlBody.html().replace(/\s{2,}/g, '').replace(/\//gi, '\\\/').replace(/"/g, '\\\'');
+                      instance.object.webContents.executeJavaScript("$('body').html(\"" + test  + "\")");
+                    })
                 });
             });
 

@@ -1,23 +1,88 @@
 {
-  "name": "electron-window-manager",
-  "version": "1.0.1",
-  "description": "A NodeJs module that handles window management for Electron (Atom Shell, previously)",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/azain/electron-window-manager.git"
-  },
-  "keywords": [
-    "electron", "atom shell", "window", "browser", "desktop"
+  "_args": [
+    [
+      "electron-window-manager",
+      "/Users/Daniel/Documents/CodeProjects/App/electron-quick-start"
+    ]
   ],
-  "author": "Ahmed Zain <tamkeenlms@gmail.com>",
-  "license": "MIT",
+  "_from": "electron-window-manager@latest",
+  "_id": "electron-window-manager@1.0.4",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/electron-window-manager",
+  "_nodeVersion": "5.0.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/electron-window-manager-1.0.4.tgz_1481965583662_0.7987063850741833"
+  },
+  "_npmUser": {
+    "email": "tamkeenweb.com@gmail.com",
+    "name": "tamkeenlms"
+  },
+  "_npmVersion": "3.3.6",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "electron-window-manager",
+    "raw": "electron-window-manager",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/electron-window-manager/-/electron-window-manager-1.0.4.tgz",
+  "_shasum": "f8a9bcb327fe240acbd0184cd4d61c09358acca8",
+  "_shrinkwrap": null,
+  "_spec": "electron-window-manager",
+  "_where": "/Users/Daniel/Documents/CodeProjects/App/electron-quick-start",
+  "author": {
+    "email": "tamkeenlms@gmail.com",
+    "name": "Ahmed Zain"
+  },
+  "bugs": {
+    "url": "https://github.com/azain/electron-window-manager/issues"
+  },
   "dependencies": {
     "electron-localshortcut": "^0.6.0",
     "underscore": "^1.8.3",
-    "watchjs": "git+https://github.com/melanke/Watch.JS.git"
-  }
+    "melanke-watchjs": "^1.3.1",
+    "cheerio": "^0.22.0"
+  },
+  "description": "A NodeJs module that handles window management for Electron (Atom Shell, previously)",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "f8a9bcb327fe240acbd0184cd4d61c09358acca8",
+    "tarball": "https://registry.npmjs.org/electron-window-manager/-/electron-window-manager-1.0.4.tgz"
+  },
+  "gitHead": "12310246b74f30327be5cb6b1ed7089ec6cc3d1c",
+  "homepage": "https://github.com/azain/electron-window-manager#readme",
+  "keywords": [
+    "electron",
+    "atom shell",
+    "window",
+    "browser",
+    "desktop"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "email": "tamkeenweb.com@gmail.com",
+      "name": "tamkeenlms"
+    }
+  ],
+  "name": "electron-window-manager",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azain/electron-window-manager.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.4"
 }
