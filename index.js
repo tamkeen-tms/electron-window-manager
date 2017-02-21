@@ -920,7 +920,7 @@
             var thisWindow = BrowserWindow.getFocusedWindow();
             if(!thisWindow) return false;
 
-            return this.getById(thisWindow.object.id);
+            return this.getById(thisWindow.id);
         },
 
         /**
