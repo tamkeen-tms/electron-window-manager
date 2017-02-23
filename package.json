@@ -18,6 +18,6 @@
   "dependencies": {
     "electron-localshortcut": "^0.6.0",
     "underscore": "^1.8.3",
-    "watchjs": "git+https://github.com/melanke/Watch.JS.git"
+    "melanke-watchjs": "^1.3.0"
   }
 }
