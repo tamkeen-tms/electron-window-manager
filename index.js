@@ -1048,6 +1048,13 @@
              * */
             'watch': function(prop, callback){
                 this.watcher.watch(this.data, prop, callback);
+            },
+		
+	    /**
+            * Unwatches the property in the shared data associated with the callback function
+            * */
+            'unwatch': function(prop, callback){
+                this.watcher.unwatch(this.data, prop, callback);
             }
         },
 
