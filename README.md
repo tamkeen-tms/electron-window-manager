@@ -12,7 +12,7 @@ Most of the applications created using Electron are one-window applications. Why
     * [Method: createNew](#createnew-name-title-url-setuptemplate-setup-showdevtools-)
     * [.templates](#class-windowmanagertemplates)
     * [.layouts](#class-windowmanagerlayouts)
-    * [.sharedDate](#class-windowmanagershareddata)
+    * [.sharedData](#class-windowmanagershareddata)
     * [.bridge](#class-windowmanagerbridge)
     * [.utils](#class-windowmanagerutils)
 * [Class: Window](#class-window)
