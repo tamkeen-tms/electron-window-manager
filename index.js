@@ -169,6 +169,7 @@
         if(!this.setup.resizable) this.setup.resizable = false;
         if(!this.setup.useContentSize) this.setup.useContentSize = true;
         if(!this.setup.x && !this.setup.y) this.setup.center = true;
+        if(!this.destroyOnClose) this.destroyOnClose = true;
 
         // Create the new browser window instance, with the passed setup
         this.object = new BrowserWindow(this.setup);
@@ -206,7 +207,7 @@
         this.object.on('closed', function(){
             console.log('Window "' + instance.name + '" was closed');
 
-            if(this.setup.destroyOnClose) {
+            if(this.destroyOnClose) {
               // Delete the reference on the windowManager object
               delete windowManager.windows[instance.name];
             }
