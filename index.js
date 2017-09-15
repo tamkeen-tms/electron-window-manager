@@ -207,7 +207,7 @@
             console.log('Window "' + instance.name + '" was closed');
 
             // Delete the reference on the windowManager object
-            delete windowManager.windows[instance.name];
+            //delete windowManager.windows[instance.name];
 
             // Delete the window object
             instance.object = null;
