@@ -13,7 +13,7 @@
     const BrowserWindow = Electron.BrowserWindow;
     const EventEmitter = new (require('events').EventEmitter);
     const FileSystem = require('fs');
-    const WatchJS = require('watchjs');
+    const WatchJS = require('melanke-watchjs');
     const Shortcuts = require('electron-localshortcut');
     const UrlPath = require('url');
     const DirPath = require('path');
