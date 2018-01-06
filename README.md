@@ -513,7 +513,7 @@ You probably wont be needing this method, but it's here just in case.
 **But don't try to use the above code, `Window` isn't available in your app scope**, use `windowManager.createNew/open` instead, and as you can see the arguments are the same in the 3 cases, **check out [windowManager.createNew](#createnew-name-title-url-setuptemplate-setup-showdevtools-) for more info on the arguments**.
 
 ### `Window.name` 
-Stores the widnow name.
+Stores the window name.
 
 ### `Window.setup` 
 Stores the window setup object.
