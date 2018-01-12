@@ -12,7 +12,7 @@ Most of the applications created using Electron are one-window applications. Why
     * [Method: createNew](#createnew-name-title-url-setuptemplate-setup-showdevtools-)
     * [.templates](#class-windowmanagertemplates)
     * [.layouts](#class-windowmanagerlayouts)
-    * [.sharedDate](#class-windowmanagershareddata)
+    * [.sharedData](#class-windowmanagershareddata)
     * [.bridge](#class-windowmanagerbridge)
     * [.utils](#class-windowmanagerutils)
 * [Class: Window](#class-window)
@@ -39,14 +39,14 @@ npm install --save electron-window-manager
 ```
 
 Then, inside the application main.js *(or whatever you've chosen for your application)*, require the module, like this:
-```
+```javascript
 var windowManager = require('electron-window-manager');
 ```
 
 Now, **this module can be used in both the "Main" and the "Renderer" processes of Electron**. In the Main process you can use it to create the application's first/main window, and later, in the Renderer process you can create the other windows of the application, or any other way you like.
 
 **On the Main process you can use it like this**:
-```
+```javascript
 	const electron = require('electron');
     const app = electron.app;
     const windowManager = require('electron-window-manager');
@@ -60,7 +60,7 @@ Now, **this module can be used in both the "Main" and the "Renderer" processes o
 
 ```
 **And in the Renderer process** (inside the created window), you can use it like this:
-```
+```javascript
 <script>
 	var remote = require('remote');
     var windowManager = remote.require('electron-window-manager');
@@ -120,7 +120,7 @@ This method initiates the module so that you could use it. It takes one *optiona
     * **defaultWindowTitle** The default title for the windows; will be used if a window title wasn't specified, and if the setup template didn't provide a title either! Here you can simply use the name of the application.
 	* **windowsTitlePrefix** (string): Each window can have its own title, this value will allow you to set a prefix for this title, for all the windows, ... maybe the application name!
 	* **onLoadFailure** (function): Here you can set what happens whenever the target URL of a window isn't accessible, meaning that the loading has failed, for whatever reason. By default a small message will be be displayed instead of the page (it basically loads the *loadFailure.html* file from the module directory). Here's an example: 
-	```
+	```javascript
 		windowManager.init({
 			'onLoadFailure': function(window){
 				window.loadURL('/404.html');
@@ -132,7 +132,7 @@ This method initiates the module so that you could use it. It takes one *optiona
 
 ### `setDefaultSetup( setup )`
 This method sets the default setup for the application windows, it basically creates a new setup template with the name "default", and marks it as the default. Example:
-```
+```javascript
 	windowManager.setDefaultSetup({'width': 600, 'height': 450, 'position': 'right'});
 ```
 **When creating a new window this setup will be used automatically, you can override this by passing FALSE as the setup template name.**
@@ -152,7 +152,7 @@ is a way of sharing preset setup properties with more than one window.
 * **showDevTools** (boolean) Whether to show the developer tools offered by Chrome or not, for debugging. False	by default.
 
 Here's an example:
-```
+```javascript
 	var homeWindow = windowManager.createNew('home', 'Welcome ...', '/pages/home.html', false, {
 		'width': 600,
 		'height': 450,
@@ -172,11 +172,11 @@ As mentioned, beside the the setup options `BrowserWindow` offers we offer coupl
 
 * **layout** (string) The name of the layout you want the window's content to be displayed inside.
 * **position** (string|array) This setup option sets the position of the window on the screen, **you can pass the x & y coordinates as an array (ex: [300, 200])**, or simply pass the position name, the available positions are: *top, right, bottom, left, topRight, topLeft, bottomRight, bottomLeft*. The default position by the way is "center".
-```
+```javascript
     var win = windowManager.createWindow(false, false, false, false, {'position': 'bottomRight'});
 ```
 * **onLoadFailure** (function) This callback will be triggered whenever the URL loading fails.
-```
+```javascript
     var win = windowManager.open(false, false, false, false, {
         'onLoadFailure': function(window){
             window.close();
@@ -193,7 +193,7 @@ This is the same as the `createNew` method, except that it opens the window dire
 
 ### `importList( file )`
 Using this method you can create more than one window instance, with the setup information retrieved from a JSON file. You will use it like this:
-```
+```javascript
 	// windows.json
 	{
 		"home": { "title": "Home", "url": "http:// ...", "setup": { ... } },
@@ -212,21 +212,21 @@ Creates a clone of the specified window and returns the `Window` class instance
 
 ### `get( name )`
 Returns the `window` instance of the specified window
-```
+```javascript
 	var win = windowManager.get('home');
 	win.resize(300, 200).restore();
 ```
 
 ### `getById( id )`
 Returns the `window` instance of the specified window by BrowserWindow instance's id attribute
-```
+```javascript
 	var win = windowManager.getById(1);
 	win.close();
 ```
 
 ### `getCurrent()`
 Returns the `Window` instance of the currently-under-focus window
-```
+```javascript
 	windowManager.getCurrent().close();
 ```
 
@@ -247,7 +247,7 @@ Closes all the window, except for one, the one you pass its name
 
 ### `maximize( [ name ] )`
 Maximizes a window. If name is specified it will target the named window. If left out it will target the currently focused window. If the window is already maximized it will restore.
-```
+```javascript
 	// Maximize focused window. Works well for window button functionality.
 	windowManager.maximize();
 
@@ -257,7 +257,7 @@ Maximizes a window. If name is specified it will target the named window. If lef
 
 ### `minimize( [ name ] )`
 Minimizes a window. If name is specified it will target the named window. If left out it will target the currently focused window.
-```
+```javascript
 	// Minimize focused window. Works well for window button functionality.
 	windowManager.minimize();
 
@@ -270,13 +270,13 @@ Restores a minimized window, by name
 
 ### `devModeChoice( whenDevMode, whenNotDevMode )`
 This method simply takes two values, the first is the one that goes when the development mode is on and the other is when it's off, and according to whether it's on or off, the corresponding value will be returned
-```
+```javascript
 	var api = windowManager.devModeChoice({'key': ... }, {'key': ...});
 ```
 
 ## Class: windowManager.templates
 When creating a new window you will need to provide a basic setup; things like the width, height and the window URL (the targeted content). The available setup options are plenty, and in most cases you will find yourself repeating it with each window you create. **The "Setup Templates" feature will help you make presets of the setup properties you use and name them, and later when creating a new window you will just pass the template name and the associated setup will be applied.**
-```
+```javascript
     windowManager.templates.set('small', {
         'width': 600,
         'height': 350,
@@ -308,7 +308,7 @@ When creating a new window you will need to provide a basic setup; things like t
     windowManager.open(false, false, 'byebye.html', 'small');
 ```
 You can set a default template for all the windows to inherit
-```
+```javascript
     windowManager.init({
         'defaultSetupTemplate': 'small'
     });
@@ -316,18 +316,18 @@ You can set a default template for all the windows to inherit
     windowManager.templates.set('small', { ... });
 ```
 You can override this option for a specific window by passing FALSE as the setupTemplate name.
-```
+```javascript
     windowManager.open('home', 'Welcome', '/pages/welcome.html', FALSE);
 ```
 **Pass null to explicitly define the template in the next parameter!**
-```
+```javascript
     windowManager.open('home', 'Welcome', '/pages/welcome.html', null, { ... });
 ```
 
 ### `windowManager.templates.set( name, setup )`
 Use this method to create a new template, you provide a name and the preferred setup, and later you can use that
 name when you are creating a new window, to apply the specified setup.
-```
+```javascript
 	windowManager.templates.set('big', {
 		'width': 1000,
 		'height': 600
@@ -339,20 +339,20 @@ Fetches a setup template by name
 
 ### `windowManager.templates.modify ( name, setup )`
 Use this method to modify the setup of a specific template, to override one or more of its properties
-```
+```javascript
     windowManager.templates.modify('big', {'height': 650});
 ```
 
 ### `windowManager.templates.getProperty ( name, property )`
 Returns the value of a specific property of the given template
-```
+```javascript
 	windowManager.templates.getProperty('big', 'width');
 ```
 
 ## Class: windowManager.layouts
 A nice feature this module offer is "Layouts". Through this feature you can set a layout/theme/design for your application. If you are working on a multi-window app this feature will be very handy.
 This feature doesn't offer much right now, but I will put more focus on in the next releases. **Here's how it works: you create a layout file, with all the assets and code you want, when you create a new window the content (HTML) of this window will be embeded/included within the layout code.** Thus you won't duplicate your code with each window; you will just include the window content withing a ready layout.
-```
+```javascript
     // layout.html
     <!doctype html>
     <html lang="en">
@@ -373,13 +373,13 @@ This feature doesn't offer much right now, but I will put more focus on in the n
     <h3>Welcome ...</h3>
 ```
 Of course you can create more than one layout, and when creating a new window you chose which layout you want the window content included in. And of course you can set a default layout for all of the application windows.
-```
+```javascript
     var win = windowManager.createNew('home', 'Welcome ... ', '/pages/welcome.html', false, {'layout': 'simple'});
     // or 
     win.useLayout('simple');
 ```
 To set a default layout for the whole application you simple pass its name in the initiation config
-```
+```javascript
     windowManager.init({
         'defaultLayout': 'simple'
     })
@@ -389,7 +389,7 @@ To override this option for a specific window you will need to pass FALSE for th
 ### `windowManager.layouts.add( name, path )`
 Adds a new layout, you need to provide the path to the layout file, and a name that represents this layout, so
 that you could use it when creating a new window.
-```
+```javascript
 	windowManager.layouts.add('default', '/layouts/default.html'); // The "/" at the beginning = {appBase}
 ```
 ### `windowManager.layouts.get( name )`
@@ -403,13 +403,13 @@ Is where the data itself is stored
 
 ### `windowManager.sharedData.set( key, value )`
 Stores a value by a key name
-```
+```javascript
 	windowManager.sharedData.set('user', {'name': ' ... ', 'email': ' ... '});
 ```
 
 ### `windowManager.sharedData.fetch( key )`
 Fetches a value, by key name
-```
+```javascript
 	windowManager.sharedData.fetch('user');
 ```
 
@@ -418,26 +418,28 @@ You can use this method to watch for changes in the saved data
 * **prop** Is the key you want to watch
 * **callback** Is the callback that will be triggered whenever the value of this property gets changed
 
-```
+```javascript
 	windowManager.sharedData.watch('user', function(prop, action, newValue, oldValue){
 		console.log('The property: ', prop, ' was:', action, ' to: ', newValue, ' from: ', oldValue);
 	});
 ```
 
 This feature is available using [WatchJS](https://github.com/melanke/Watch.JS), please visit the module docs for further details. Also, you can access WatchJS itself in case you needed the whole API like this:
-```
+```javascript
 	windowManager.sharedData.watcher; // The WatchJS module
 	
 	var watcher = windowManager.sharedData.watcher;
 	watcher.unwatch( ... );
 ```
 
+### `windowManager.sharedData.unwatch( prop, callback )`
+Stops watching for changes in the saved data.
 
 ## class: windowManager.bridge
 > This is a simple feature to help you make your app more alive and connected windows-wise. You will be able to emit and listen to events inside the created windows.
 
 Here's an example:
-```
+```javascript
 	// On window "home"
 	let handler = windowManager.bridge.on('new_chat_message', function(event){
 		...
@@ -468,7 +470,7 @@ and return the handler added into the `event` listeners array.
 
 This feature is basically a wrapper for NodeJs native EventEmitter class, which is used heavily almost every where inside Electron itself. Check it the [docs](https://nodejs.org/api/events.html#events_class_eventemitter) for extra knowledge about the subject. You also can access the EventEmitter used by this module simply by calling `windowManager.eventEmitter`
 
-```
+```javascript
 	windowManager.eventEmitter.addListener( ... );
 ```
 
@@ -482,7 +484,7 @@ This method remove the listener returned by `windowManager.bridge.on` or `window
 
 This feature is basically a wrapper for NodeJs native EventEmitter class, Check it the [docs](https://nodejs.org/api/events.html#events_class_eventemitter) for extra knowledge about the subject.
 
-```
+```javascript
     windowManager.eventEmitter.addListener( ... );
 ```
 
@@ -506,14 +508,14 @@ You probably wont be needing this method, but it's here just in case.
 
 # Class: Window
 > The `Window` class is basically the whole thing, [windowManager](#class-windowmanager) is merely an access point for its instances. Whenever you use `windowManager.createNew( ... )` or `windowManager.open( ... )` you are creating a new instance of `Window`.
-```
+```javascript
     var window = new Window( name, title, url, setupTemplate, setup, showDevTools );
 ```
 
 **But don't try to use the above code, `Window` isn't available in your app scope**, use `windowManager.createNew/open` instead, and as you can see the arguments are the same in the 3 cases, **check out [windowManager.createNew](#createnew-name-title-url-setuptemplate-setup-showdevtools-) for more info on the arguments**.
 
 ### `Window.name` 
-Stores the widnow name.
+Stores the window name.
 
 ### `Window.setup` 
 Stores the window setup object.
@@ -523,14 +525,14 @@ Stores the `BrowserWindow` instance created.
 
 ### `Window.set( prop, value )`
 Updates the window setup. You can either provide a property-value pair or pass an object to override the current setup.
-```
+```javascript
     win.set('width', 300);
     win.set({'width': 300, 'height': 250});
 ```
 
 ### `create( url )`
 Creates the browserwindow instance.
-```
+```javascript
     var win1 = windowManager.createNew(false, false, 'win1.html');
     win1.create();
     win1.object.on(...);
@@ -545,7 +547,7 @@ Creates the browserwindow instance.
 
 ### `open( url )`
 Opens/shows the created window.
-```
+```javascript
     var win1 = windowManager.createNew(false, false, 'win1.html');
     win1.open();
     
@@ -560,7 +562,7 @@ Makes the window under focus.
 
 ### `useLayout( name )`
 Sets the layout to use in the window, by name.
-```
+```javascript
     var window = window.createNew( ... );
     window.useLayout('classy');
     window.open();
@@ -571,7 +573,7 @@ Sets the target URL for the window, to open a URL *after* the window is open use
 
 ### `applySetupTemplate( name )`
 Sets the setup template to use, by name.
-```
+```javascript
     var window = window.createNew( ... );
     window.applySetupTemplate('big');
     window.open();
@@ -579,14 +581,14 @@ Sets the setup template to use, by name.
 
 ### `loadURL( url, options )` 
 Sets the content of the new window; the url it will open. Same as with [BrowserWindow](http://electron.atom.io/docs/v0.36.0/api/browser-window/#win-loadurl-url-options) you can use both local and remote targets. 
-```
+```javascript
     var win = windowManager.createNew();
     win.loadURL('file://' + __dirname + 'index.html');
     // or 
     win.loadURL('http://google.com');
 ```
 The same way you would open a url using any browser. Now, to make things easier you can set the base path to the application in the config (while initiating the module) and use this path in any URL-value you path to the module, `appBase`, or by simply starting the value with "/".
-```
+```javascript
     win.loadURL('/pages/index.html');
     // or 
     win.loadURL(' ... {appBase} ... ');
@@ -594,7 +596,7 @@ The same way you would open a url using any browser. Now, to make things easier 
 
 ### `html( code, options )`
 It simply sets the HTML code of the window, instead of loading a url.
-```
+```javascript
     win.html('<h3> Electron is AWESOME </h3>');
 ```
 
@@ -603,7 +605,7 @@ It simply takes the page down! It will trigger the `onLoadFailure` callback, whi
 
 ### `content()`
 Returns `BrowserWindow`'s [webContents](http://electron.atom.io/docs/v0.36.0/api/web-contents/) object for the window.
-```
+```javascript
     win.content().on('did-fail-load', function(){ ... });
     win.content().downloadURL( ... )
     win.content().reload()
@@ -612,7 +614,7 @@ Returns `BrowserWindow`'s [webContents](http://electron.atom.io/docs/v0.36.0/api
 
 ### `reload( ignoreCache )`
 Reloads the URL of the window, if TRUE is passed the page will be reloaded with the cache ignored.
-```
+```javascript
     win.reload(); // With cache
     win.reload(true); // Without cache
 ```
@@ -622,7 +624,7 @@ Returns the URL open inside the window.
 
 ### `onReady( withTheDomReady, callback )`
 Registers a callback that triggers when the page is ready. If you pass TRUE for the `withTheDomReady` argument the callback will trigger only when the DOM is ready, and not before.
-```
+```javascript
     win.onReady(true, function(window){
         window.resize(600);
     });
@@ -630,7 +632,7 @@ Registers a callback that triggers when the page is ready. If you pass TRUE for 
 
 ### `execute( code )`
 Executes JavaScript code on the window content.
-```
+```javascript
     win.execute(' alert(" Hi! ") ');
 ```
 
@@ -659,27 +661,27 @@ Toggles the developer tools. **By default, and when the `devMode` is on you can 
 
 ### `registerShortcut( accelerator, callback )`
 Registers a keyboard shortcut on the window
-```
+```javascript
     win.registerShortcut('CTRL+N', function(){
         windowManager.open( ... );
     });
 
 ```
 This feature is available thanks to the  [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) module. Here's more details on the [shortcuts codes](https://github.com/atom/electron/blob/master/docs/api/accelerator.md). The module itself can be access through `windowManager.shortcuts` in case you wanted to use more of it, to globally-register a new shortcut or something.
-```
+```javascript
     windowManager.shortcuts.unregisterAll();
 ```
 
 ### `move( x, y )`
 Moves the window to a specific x (and/or) y coordinates. You can also provide a position "name" and it will be resolved to the correct position according to the screen size and the window dimensions. The available position names are *top, right, bottom, left + topRight, topLeft, bottomRight, bottomLeft* 
-```
+```javascript
     win.move(300, 200);
     win.move('topLeft');
 ```
 
 ### `resize( width, height )`
 Resizes the window to a specific width and/or height
-```
+```javascript
     win.resize(1000); // Only set the width
     win.resize(800, 400);
 ```
@@ -701,4 +703,4 @@ And yeah, THANKS GITHUB FOR ELECTRON, IT'S A DREAM CAME TRUE.
 ---
 The MIT License (MIT)
 
-Copyright (c) 2015 Ahmed Zain <tamkeenlms@gmail.com>
+Copyright (c) 2015 <tamkeenlms@gmail.com>
