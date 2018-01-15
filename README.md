@@ -1,9 +1,8 @@
 # What it is
 
-> A NodeJs module for [Electron](http://electron.atom.io/) (Atom Shell, previously) that will help you create, control, manage and connect your application windows very easily.
+> A NodeJs module for [Electron](https://electronjs.org) (Atom Shell, previously) that will help you create, control, manage and connect your application windows very easily.
 
 Most of the applications created using Electron are one-window applications. Why only one? Maybe because we as web developers are used to building only inside the browser. But if you are to build a multi-window Electron application then you may want to have a look at this package module.
-
 
 * [Features](#features)
 * [Installation](#installation)
@@ -22,7 +21,7 @@ Most of the applications created using Electron are one-window applications. Why
 
 ## Features
 
-Creating a "window" in Electron is done using Electron's native ["BrowserWindow"](http://electron.atom.io/docs/v0.36.0/api/browser-window/) module, which is easy to use and very straight forward, until the point when you need to access/control a window from another one, or share values/events between these windows, or use a unified layout/design. That's when this modules come into picture. If you need it I guarantee you will love it :)
+Creating a "window" in Electron is done using Electron's native ["BrowserWindow"](https://electronjs.org/docs/api/browser-window) module, which is easy to use and very straight forward, until the point when you need to access/control a window from another one, or share values/events between these windows, or use a unified layout/design. That's when this modules come into picture. If you need it I guarantee you will love it :)
 
 * You can easily open, close, move, resize, clone ... etc windows. Of course all of that IS DOABLE through Electron's BrowserWindow, but our module here makes it much easier. It's a kind of wrapper for Electron's module, plus some extra functionalities and tools.
 * **You can access any window from within any other window**. That's because all the work is done on the "Main" process, and because each window is given a unique name, so that you could "access" it from anywhere!
@@ -76,7 +75,7 @@ Now, **this module can be used in both the "Main" and the "Renderer" processes o
 Please go ahead and check out the module code and see for yourself how it all works, there's no magic involved, but it's consistent and easy to read. Just have a look at the code and you are good to go.
 
 ## How it works 
-* **This module is basically a wrapper for Electron's `BrowserWindow`** module, so it's definitely a good start to check out Electron's [documentation for BrowserWindow](http://electron.atom.io/docs/v0.36.0/api/browser-window/).
+* **This module is basically a wrapper for Electron's `BrowserWindow`** module, so it's definitely a good start to check out Electron's [documentation for BrowserWindow](https://electronjs.org/docs/api/browser-window).
 * At its core, this module **works as a holder for the `BrowserWindow` instances created, each instance is stored by a unique name**. So you could later on call any window by name. 
 * **Each `BrowserWindow` instance is created inside the ["Window"](#class-window) class**, which in a way extends and adds more functionalities to it. 
 * When creating a new window you are required to provide a basic SETUP for it, stuff like the width, height, title, url ... etc. The setup options `BrowserWindow` offers are plenty, and this module adds couple more. **If some/many of the windows share the same setup, you can simply create a ["Setup Template"](#class-windowmanagertemplates) and pass this template (by name) to the window in the making to apply the setup**.
@@ -148,7 +147,7 @@ This method, as the name suggests, creates a new window, it will create and retu
 the path to the application base, set in the config), also you can use `{appBase}` inside the passed value and it will be replaces with the application base path.
 * **setupTemplate** (string) The name of setup template you want applied to this new window. "Setup Templates"
 is a way of sharing preset setup properties with more than one window.
-* **setup** (object|string) [optional] The new window setup. **The full options list is available [here](http://electron.atom.io/docs/v0.36.0/api/browser-window/)**.This module offers couple more options to use in the mix, but we will get to that later. BTW, as a shortcut you can pass the new window dimensions like this "300x200", where 300 is the width and 200 is the height!
+* **setup** (object|string) [optional] The new window setup. **The full options list is available [here](https://electronjs.org/docs/api/browser-window)**.This module offers couple more options to use in the mix, but we will get to that later. BTW, as a shortcut you can pass the new window dimensions like this "300x200", where 300 is the width and 200 is the height!
 * **showDevTools** (boolean) Whether to show the developer tools offered by Chrome or not, for debugging. False	by default.
 
 Here's an example:
@@ -580,7 +579,7 @@ Sets the setup template to use, by name.
 ```
 
 ### `loadURL( url, options )` 
-Sets the content of the new window; the url it will open. Same as with [BrowserWindow](http://electron.atom.io/docs/v0.36.0/api/browser-window/#win-loadurl-url-options) you can use both local and remote targets. 
+Sets the content of the new window; the url it will open. Same as with [BrowserWindow](https://electronjs.org/docs/api/browser-window#winloadurlurl-options) you can use both local and remote targets. 
 ```javascript
     var win = windowManager.createNew();
     win.loadURL('file://' + __dirname + 'index.html');
@@ -604,7 +603,7 @@ It simply sets the HTML code of the window, instead of loading a url.
 It simply takes the page down! It will trigger the `onLoadFailure` callback, which by default will force display a "Not available" message page. This method is called whenever the target url of the window isn't available, instead of displaying a blank page.
 
 ### `content()`
-Returns `BrowserWindow`'s [webContents](http://electron.atom.io/docs/v0.36.0/api/web-contents/) object for the window.
+Returns `BrowserWindow`'s [webContents](https://electronjs.org/docs/api/web-contents) object for the window.
 ```javascript
     win.content().on('did-fail-load', function(){ ... });
     win.content().downloadURL( ... )
@@ -667,7 +666,7 @@ Registers a keyboard shortcut on the window
     });
 
 ```
-This feature is available thanks to the  [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) module. Here's more details on the [shortcuts codes](https://github.com/atom/electron/blob/master/docs/api/accelerator.md). The module itself can be access through `windowManager.shortcuts` in case you wanted to use more of it, to globally-register a new shortcut or something.
+This feature is available thanks to the  [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) module. Here's more details on the [shortcuts codes](https://github.com/electron/electron/blob/master/docs/api/accelerator.md). The module itself can be access through `windowManager.shortcuts` in case you wanted to use more of it, to globally-register a new shortcut or something.
 ```javascript
     windowManager.shortcuts.unregisterAll();
 ```

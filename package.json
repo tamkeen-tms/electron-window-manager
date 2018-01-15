@@ -16,7 +16,7 @@
   "author": "Ahmed Zain <tamkeenlms@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "electron-localshortcut": "^0.6.0",
+    "electron-localshortcut": "^0.6.1",
     "underscore": "^1.8.3",
     "melanke-watchjs": "^1.3.1"
   }
