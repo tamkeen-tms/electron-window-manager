@@ -66,7 +66,7 @@ Now, **this module can be used in both the "Main" and the "Renderer" processes o
 
     // Create a new window
     var win2 = windowManager.createNew('win2', 'Windows #2');
-    win2.loadURL('/win2.html');
+    win2.setURL('/win2.html');
     win2.onReady( ... );
     win2.open();
 </script>
@@ -568,7 +568,7 @@ Sets the layout to use in the window, by name.
 ```
 
 ### `setURL( url )`
-Sets the target URL for the window, to open a URL *after* the window is open use `loadURL()`.
+Sets the target URL for the window. To open a URL **after** the window is open use `loadURL()`.
 
 ### `applySetupTemplate( name )`
 Sets the setup template to use, by name.
@@ -579,7 +579,7 @@ Sets the setup template to use, by name.
 ```
 
 ### `loadURL( url, options )` 
-Sets the content of the new window; the url it will open. Same as with [BrowserWindow](https://electronjs.org/docs/api/browser-window#winloadurlurl-options) you can use both local and remote targets. 
+Sets the content of the opened window from the url. Same as with [BrowserWindow](https://electronjs.org/docs/api/browser-window#winloadurlurl-options) you can use both local and remote targets. 
 ```javascript
     var win = windowManager.createNew();
     win.loadURL('file://' + __dirname + 'index.html');
