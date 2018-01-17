@@ -1,9 +1,10 @@
+[![NPM](https://nodei.co/npm/electron-window-manager.png?downloads=true)](https://www.npmjs.com/package/electron-window-manager)
+
 # What it is
 
-> A NodeJs module for [Electron](http://electron.atom.io/) (Atom Shell, previously) that will help you create, control, manage and connect your application windows very easily.
+> A NodeJs module for [Electron](https://electronjs.org) (Atom Shell, previously) that will help you create, control, manage and connect your application windows very easily.
 
 Most of the applications created using Electron are one-window applications. Why only one? Maybe because we as web developers are used to building only inside the browser. But if you are to build a multi-window Electron application then you may want to have a look at this package module.
-
 
 * [Features](#features)
 * [Installation](#installation)
@@ -22,7 +23,7 @@ Most of the applications created using Electron are one-window applications. Why
 
 ## Features
 
-Creating a "window" in Electron is done using Electron's native ["BrowserWindow"](http://electron.atom.io/docs/v0.36.0/api/browser-window/) module, which is easy to use and very straight forward, until the point when you need to access/control a window from another one, or share values/events between these windows, or use a unified layout/design. That's when this modules come into picture. If you need it I guarantee you will love it :)
+Creating a "window" in Electron is done using Electron's native ["BrowserWindow"](https://electronjs.org/docs/api/browser-window) module, which is easy to use and very straight forward, until the point when you need to access/control a window from another one, or share values/events between these windows, or use a unified layout/design. That's when this modules come into picture. If you need it I guarantee you will love it :)
 
 * You can easily open, close, move, resize, clone ... etc windows. Of course all of that IS DOABLE through Electron's BrowserWindow, but our module here makes it much easier. It's a kind of wrapper for Electron's module, plus some extra functionalities and tools.
 * **You can access any window from within any other window**. That's because all the work is done on the "Main" process, and because each window is given a unique name, so that you could "access" it from anywhere!
@@ -67,7 +68,7 @@ Now, **this module can be used in both the "Main" and the "Renderer" processes o
 
     // Create a new window
     var win2 = windowManager.createNew('win2', 'Windows #2');
-    win2.loadURL('/win2.html');
+    win2.setURL('/win2.html');
     win2.onReady( ... );
     win2.open();
 </script>
@@ -76,7 +77,7 @@ Now, **this module can be used in both the "Main" and the "Renderer" processes o
 Please go ahead and check out the module code and see for yourself how it all works, there's no magic involved, but it's consistent and easy to read. Just have a look at the code and you are good to go.
 
 ## How it works 
-* **This module is basically a wrapper for Electron's `BrowserWindow`** module, so it's definitely a good start to check out Electron's [documentation for BrowserWindow](http://electron.atom.io/docs/v0.36.0/api/browser-window/).
+* **This module is basically a wrapper for Electron's `BrowserWindow`** module, so it's definitely a good start to check out Electron's [documentation for BrowserWindow](https://electronjs.org/docs/api/browser-window).
 * At its core, this module **works as a holder for the `BrowserWindow` instances created, each instance is stored by a unique name**. So you could later on call any window by name. 
 * **Each `BrowserWindow` instance is created inside the ["Window"](#class-window) class**, which in a way extends and adds more functionalities to it. 
 * When creating a new window you are required to provide a basic SETUP for it, stuff like the width, height, title, url ... etc. The setup options `BrowserWindow` offers are plenty, and this module adds couple more. **If some/many of the windows share the same setup, you can simply create a ["Setup Template"](#class-windowmanagertemplates) and pass this template (by name) to the window in the making to apply the setup**.
@@ -140,15 +141,11 @@ This method sets the default setup for the application windows, it basically cre
 ### `createNew( name, title, url, setupTemplate, setup, showDevTools )`
 This method, as the name suggests, creates a new window, it will create and return a new instance of the class [Window](#class-window). **All of the listed arguments up there are optional by the way**, even the url; you can omit it now and set it later. 
 
-* **name** (string): The name of the new window, if omitted a serialized name will be used instead, like
-"window_1" ~> "window_2" ~> ...
+* **name** (string): The name of the new window, if omitted a serialized name will be used instead, like "window_1" ~> "window_2" ~> ...
 * **title** (string): The window title. If omitted the setup template 'title' property will be used, and if this property wasn't provided the `config.defaultWindowTitle` will be used instead. If all of that isn't set the document title will be used.
-* **url** (string): The targeted URL for the window, it could be a local file (file:// ... .html), or a URL
-(http:// ...). If the passed value here starts with "/" the value will be preceded by the "appBase" (which is
-the path to the application base, set in the config), also you can use `{appBase}` inside the passed value and it will be replaces with the application base path.
-* **setupTemplate** (string) The name of setup template you want applied to this new window. "Setup Templates"
-is a way of sharing preset setup properties with more than one window.
-* **setup** (object|string) [optional] The new window setup. **The full options list is available [here](http://electron.atom.io/docs/v0.36.0/api/browser-window/)**.This module offers couple more options to use in the mix, but we will get to that later. BTW, as a shortcut you can pass the new window dimensions like this "300x200", where 300 is the width and 200 is the height!
+* **url** (string): The targeted URL for the window, it could be a local file (file:// ... .html), or a URL (http:// ...). If the passed value here starts with "/" the value will be preceded by the "appBase" (which is the path to the application base, set in the config), also you can use `{appBase}` inside the passed value and it will be replaced with the application base path.
+* **setupTemplate** (string) The name of setup template you want applied to this new window. "Setup Templates" is a way of sharing preset setup properties with more than one window.
+* **setup** (object|string) [optional] The new window setup. **The full options list is available [here](https://electronjs.org/docs/api/browser-window)**.This module offers couple more options to use in the mix, but we will get to that later. BTW, as a shortcut you can pass the new window dimensions like this "300x200", where 300 is the width and 200 is the height!
 * **showDevTools** (boolean) Whether to show the developer tools offered by Chrome or not, for debugging. False	by default.
 
 Here's an example:
@@ -325,8 +322,7 @@ You can override this option for a specific window by passing FALSE as the setup
 ```
 
 ### `windowManager.templates.set( name, setup )`
-Use this method to create a new template, you provide a name and the preferred setup, and later you can use that
-name when you are creating a new window, to apply the specified setup.
+Use this method to create a new template, you provide a name and the preferred setup, and later you can use that name when you are creating a new window, to apply the specified setup.
 ```javascript
 	windowManager.templates.set('big', {
 		'width': 1000,
@@ -363,9 +359,8 @@ This feature doesn't offer much right now, but I will put more focus on in the n
         
         {{content}} <!--This will be replaced with the window content-->
         
-        <script>
-            ...
-        </script>
+        <script src="{{appBase}}scripts/bootstrap.js"></script>
+        <!--{{appBase}} will be replaced with the application base path-->
     </body>
     </html>
     
@@ -387,8 +382,7 @@ To set a default layout for the whole application you simple pass its name in th
 To override this option for a specific window you will need to pass FALSE for the property "layout" when creating the window
 
 ### `windowManager.layouts.add( name, path )`
-Adds a new layout, you need to provide the path to the layout file, and a name that represents this layout, so
-that you could use it when creating a new window.
+Adds a new layout, you need to provide the path to the layout file, and a name that represents this layout, so that you could use it when creating a new window.
 ```javascript
 	windowManager.layouts.add('default', '/layouts/default.html'); // The "/" at the beginning = {appBase}
 ```
@@ -432,6 +426,8 @@ This feature is available using [WatchJS](https://github.com/melanke/Watch.JS), 
 	watcher.unwatch( ... );
 ```
 
+### `windowManager.sharedData.unwatch( prop, callback )`
+Stops watching for changes in the saved data.
 
 ## class: windowManager.bridge
 > This is a simple feature to help you make your app more alive and connected windows-wise. You will be able to emit and listen to events inside the created windows.
@@ -458,8 +454,7 @@ This method emits an event to whatever page listening for it
 * **target** [optional] The name of the targeted. In case you are targeting a specific window.
 
 ### `windowManager.bridge.on( event, callback )`
-This method adds a listener for a specific `event`, and whenever this event is triggered the `callback` will be called,
-and return the handler added into the `event` listeners array.
+This method adds a listener for a specific `event`, and whenever this event is triggered the `callback` will be called, and return the handler added into the `event` listeners array.
 * **event** The name of the event the window will be watching for
 * **callback** The callback to call when the event is emitted. This call back will be passed 1 parameters with the following properties:
 	* **event** The event name
@@ -493,8 +488,7 @@ This object holds a couple of utility method, for module internal use, and for y
 Returns the path to the application directory.
 
 ### `windowManager.utils.readyURL( url )`
-It readies the given URL for use with in the module, basically it replaces the "{appBase}" with the path to the
-application directory.
+It readies the given URL for use with in the module, basically it replaces the `/` prefix or the `{appBase}` string with the path to the application directory.
 
 ### `windowManager.utils.resolvePosition( setup )`
 This method takes a position name and returns the corresponding x & y coordinates, the accepted values are: "top", "bottom", "right", "left", "topRight", "topLeft", "bottomRight", "bottomLeft" and "center".
@@ -567,7 +561,7 @@ Sets the layout to use in the window, by name.
 ```
 
 ### `setURL( url )`
-Sets the target URL for the window, to open a URL *after* the window is open use `loadURL()`.
+Sets the target URL for the window. To open a URL **after** the window is open use `loadURL()`.
 
 ### `applySetupTemplate( name )`
 Sets the setup template to use, by name.
@@ -578,18 +572,18 @@ Sets the setup template to use, by name.
 ```
 
 ### `loadURL( url, options )` 
-Sets the content of the new window; the url it will open. Same as with [BrowserWindow](http://electron.atom.io/docs/v0.36.0/api/browser-window/#win-loadurl-url-options) you can use both local and remote targets. 
+Sets the content of the opened window from the url. Same as with [WebContents](https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsloadurlurl-options) you can use both local and remote targets. 
 ```javascript
     var win = windowManager.createNew();
     win.loadURL('file://' + __dirname + 'index.html');
     // or 
     win.loadURL('http://google.com');
 ```
-The same way you would open a url using any browser. Now, to make things easier you can set the base path to the application in the config (while initiating the module) and use this path in any URL-value you path to the module, `appBase`, or by simply starting the value with "/".
+The same way you would open a url using any browser. Now, to make things easier you can set the base path to the application in the config (while initiating the module) and use this path in any URL-value you path to the module, `{appBase}`, or by simply starting the value with `/`.
 ```javascript
     win.loadURL('/pages/index.html');
     // or 
-    win.loadURL(' ... {appBase} ... ');
+    win.loadURL('{appBase}pages/index.html');
 ```
 
 ### `html( code, options )`
@@ -602,7 +596,7 @@ It simply sets the HTML code of the window, instead of loading a url.
 It simply takes the page down! It will trigger the `onLoadFailure` callback, which by default will force display a "Not available" message page. This method is called whenever the target url of the window isn't available, instead of displaying a blank page.
 
 ### `content()`
-Returns `BrowserWindow`'s [webContents](http://electron.atom.io/docs/v0.36.0/api/web-contents/) object for the window.
+Returns `BrowserWindow`'s [webContents](https://electronjs.org/docs/api/web-contents) object for the window.
 ```javascript
     win.content().on('did-fail-load', function(){ ... });
     win.content().downloadURL( ... )
@@ -665,7 +659,7 @@ Registers a keyboard shortcut on the window
     });
 
 ```
-This feature is available thanks to the  [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) module. Here's more details on the [shortcuts codes](https://github.com/atom/electron/blob/master/docs/api/accelerator.md). The module itself can be access through `windowManager.shortcuts` in case you wanted to use more of it, to globally-register a new shortcut or something.
+This feature is available thanks to the  [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) module. Here's more details on the [shortcuts codes](https://github.com/electron/electron/blob/master/docs/api/accelerator.md). The module itself can be access through `windowManager.shortcuts` in case you wanted to use more of it, to globally-register a new shortcut or something.
 ```javascript
     windowManager.shortcuts.unregisterAll();
 ```
@@ -698,7 +692,7 @@ Resizes the window to a specific width and/or height
 
 And yeah, THANKS GITHUB FOR ELECTRON, IT'S A DREAM CAME TRUE.
 
----
-The MIT License (MIT)
+## License
+[MIT License](https://github.com/TamkeenLMS/electron-window-manager/blob/master/LICENSE)
 
 Copyright (c) 2015 <tamkeenlms@gmail.com>
