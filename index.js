@@ -261,8 +261,9 @@
             console.log('The layout "' + layout +'" wasn\'t found!');
         }
 
-        if(layout && layoutFile && url.substring(0, 4) != 'http'){
+        if(layout && layoutFile && url.substring(0, 4) !== 'http'){
             url = url.replace('file://', '');
+            layoutFile = layoutFile.replace('file://', '');
 
             // Load the the layout first
             FileSystem.readFile(layoutFile, 'utf-8', function(error, layoutCode){
@@ -278,7 +279,7 @@
                 // Load the targeted file body
                 FileSystem.readFile(url, 'utf-8', function(error, content){
                     if(error){
-                        console.log('Can not find the he targeted page :' + url);
+                        console.log('Couldn\'t load the target file:' + url);
 
                         // Take the page down!
                         instance.down();
@@ -287,7 +288,9 @@
                     }
 
                     // Get the final body
-                    content = layoutCode.replace('{{content}}', content);
+                    content = layoutCode
+                                .replace(/{{appBase}}/g, utils.getAppLocalPath())
+                                .replace('{{content}}', content);
 
                     // Load the final output
                     instance.html(content, options);
@@ -306,7 +309,7 @@
      * @param options
      * */
     Window.prototype.html = function(code, options){
-        this.content().loadURL('data:text/html,' + code, options);
+        this.content().loadURL('data:text/html;charset=utf-8,' + code, options);
     };
 
     /**
@@ -568,9 +571,8 @@
          * path. Also if it contain "{appBase}", this value will be replaces with the app path too.
          * */
         'readyURL': function(url){
-            if(url[0] == '/'){
-                return windowManager.config.appBase + url;
-
+            if(url[0] === '/'){
+                return windowManager.config.appBase + url.substr(1);
             }else{
                 return url.replace('{appBase}', windowManager.config.appBase);
             }
@@ -607,7 +609,7 @@
             }
 
             // It's center by default, no need to carry on
-            if(position == 'center'){
+            if(position === 'center'){
                 return false;
             }
 
@@ -718,7 +720,7 @@
          * @param path The path to the layout. It will be automatically prefixed with the app full path
          * */
         'add': function(name, path){
-            this.layouts[name] = utils.getAppLocalPath() + path;
+            this.layouts[name] = utils.readyURL(path);
         },
 
         /**
@@ -789,6 +791,9 @@
                 this.config = _.extend(this.config, config);
 
             }else if(_.isString(config)){
+                if(config.length && config[config.length-1] !== '/'){
+                    config = config + '/';
+                }
                 this.config.appBase = config;
             }
 
@@ -967,7 +972,7 @@
 
             // Loop through the windows, close all of them and focus on the targeted one
             _.each(windows, function(window){
-                if(window.id != windowID){
+                if(window.id !== windowID){
                     window.close();
                 }
             });

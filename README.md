@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/electron-window-manager.png?downloads=true)](https://www.npmjs.com/package/electron-window-manager)
+
 # What it is
 
 > A NodeJs module for [Electron](https://electronjs.org) (Atom Shell, previously) that will help you create, control, manage and connect your application windows very easily.
@@ -139,14 +141,10 @@ This method sets the default setup for the application windows, it basically cre
 ### `createNew( name, title, url, setupTemplate, setup, showDevTools )`
 This method, as the name suggests, creates a new window, it will create and return a new instance of the class [Window](#class-window). **All of the listed arguments up there are optional by the way**, even the url; you can omit it now and set it later. 
 
-* **name** (string): The name of the new window, if omitted a serialized name will be used instead, like
-"window_1" ~> "window_2" ~> ...
+* **name** (string): The name of the new window, if omitted a serialized name will be used instead, like "window_1" ~> "window_2" ~> ...
 * **title** (string): The window title. If omitted the setup template 'title' property will be used, and if this property wasn't provided the `config.defaultWindowTitle` will be used instead. If all of that isn't set the document title will be used.
-* **url** (string): The targeted URL for the window, it could be a local file (file:// ... .html), or a URL
-(http:// ...). If the passed value here starts with "/" the value will be preceded by the "appBase" (which is
-the path to the application base, set in the config), also you can use `{appBase}` inside the passed value and it will be replaces with the application base path.
-* **setupTemplate** (string) The name of setup template you want applied to this new window. "Setup Templates"
-is a way of sharing preset setup properties with more than one window.
+* **url** (string): The targeted URL for the window, it could be a local file (file:// ... .html), or a URL (http:// ...). If the passed value here starts with "/" the value will be preceded by the "appBase" (which is the path to the application base, set in the config), also you can use `{appBase}` inside the passed value and it will be replaced with the application base path.
+* **setupTemplate** (string) The name of setup template you want applied to this new window. "Setup Templates" is a way of sharing preset setup properties with more than one window.
 * **setup** (object|string) [optional] The new window setup. **The full options list is available [here](https://electronjs.org/docs/api/browser-window)**.This module offers couple more options to use in the mix, but we will get to that later. BTW, as a shortcut you can pass the new window dimensions like this "300x200", where 300 is the width and 200 is the height!
 * **showDevTools** (boolean) Whether to show the developer tools offered by Chrome or not, for debugging. False	by default.
 
@@ -324,8 +322,7 @@ You can override this option for a specific window by passing FALSE as the setup
 ```
 
 ### `windowManager.templates.set( name, setup )`
-Use this method to create a new template, you provide a name and the preferred setup, and later you can use that
-name when you are creating a new window, to apply the specified setup.
+Use this method to create a new template, you provide a name and the preferred setup, and later you can use that name when you are creating a new window, to apply the specified setup.
 ```javascript
 	windowManager.templates.set('big', {
 		'width': 1000,
@@ -362,9 +359,8 @@ This feature doesn't offer much right now, but I will put more focus on in the n
         
         {{content}} <!--This will be replaced with the window content-->
         
-        <script>
-            ...
-        </script>
+        <script src="{{appBase}}scripts/bootstrap.js"></script>
+        <!--{{appBase}} will be replaced with the application base path-->
     </body>
     </html>
     
@@ -386,8 +382,7 @@ To set a default layout for the whole application you simple pass its name in th
 To override this option for a specific window you will need to pass FALSE for the property "layout" when creating the window
 
 ### `windowManager.layouts.add( name, path )`
-Adds a new layout, you need to provide the path to the layout file, and a name that represents this layout, so
-that you could use it when creating a new window.
+Adds a new layout, you need to provide the path to the layout file, and a name that represents this layout, so that you could use it when creating a new window.
 ```javascript
 	windowManager.layouts.add('default', '/layouts/default.html'); // The "/" at the beginning = {appBase}
 ```
@@ -459,8 +454,7 @@ This method emits an event to whatever page listening for it
 * **target** [optional] The name of the targeted. In case you are targeting a specific window.
 
 ### `windowManager.bridge.on( event, callback )`
-This method adds a listener for a specific `event`, and whenever this event is triggered the `callback` will be called,
-and return the handler added into the `event` listeners array.
+This method adds a listener for a specific `event`, and whenever this event is triggered the `callback` will be called, and return the handler added into the `event` listeners array.
 * **event** The name of the event the window will be watching for
 * **callback** The callback to call when the event is emitted. This call back will be passed 1 parameters with the following properties:
 	* **event** The event name
@@ -494,8 +488,7 @@ This object holds a couple of utility method, for module internal use, and for y
 Returns the path to the application directory.
 
 ### `windowManager.utils.readyURL( url )`
-It readies the given URL for use with in the module, basically it replaces the "{appBase}" with the path to the
-application directory.
+It readies the given URL for use with in the module, basically it replaces the `/` prefix or the `{appBase}` string with the path to the application directory.
 
 ### `windowManager.utils.resolvePosition( setup )`
 This method takes a position name and returns the corresponding x & y coordinates, the accepted values are: "top", "bottom", "right", "left", "topRight", "topLeft", "bottomRight", "bottomLeft" and "center".
@@ -579,18 +572,18 @@ Sets the setup template to use, by name.
 ```
 
 ### `loadURL( url, options )` 
-Sets the content of the opened window from the url. Same as with [BrowserWindow](https://electronjs.org/docs/api/browser-window#winloadurlurl-options) you can use both local and remote targets. 
+Sets the content of the opened window from the url. Same as with [WebContents](https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsloadurlurl-options) you can use both local and remote targets. 
 ```javascript
     var win = windowManager.createNew();
     win.loadURL('file://' + __dirname + 'index.html');
     // or 
     win.loadURL('http://google.com');
 ```
-The same way you would open a url using any browser. Now, to make things easier you can set the base path to the application in the config (while initiating the module) and use this path in any URL-value you path to the module, `appBase`, or by simply starting the value with "/".
+The same way you would open a url using any browser. Now, to make things easier you can set the base path to the application in the config (while initiating the module) and use this path in any URL-value you path to the module, `{appBase}`, or by simply starting the value with `/`.
 ```javascript
     win.loadURL('/pages/index.html');
     // or 
-    win.loadURL(' ... {appBase} ... ');
+    win.loadURL('{appBase}pages/index.html');
 ```
 
 ### `html( code, options )`
@@ -699,7 +692,7 @@ Resizes the window to a specific width and/or height
 
 And yeah, THANKS GITHUB FOR ELECTRON, IT'S A DREAM CAME TRUE.
 
----
-The MIT License (MIT)
+## License
+[MIT License](https://github.com/TamkeenLMS/electron-window-manager/blob/master/LICENSE)
 
 Copyright (c) 2015 <tamkeenlms@gmail.com>
