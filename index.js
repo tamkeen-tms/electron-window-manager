@@ -293,7 +293,7 @@ Window.prototype.loadURL = function(url, options){
 
                 // Get the final body
                 content = layoutCode
-                            .replace(/{{appBase}}/g, utils.getAppLocalPath())
+                            .replace(/\{\{appBase\}\}/g, utils.getAppLocalPath())
                             .replace('{{content}}', content);
 
                 // Load the final output
