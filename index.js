@@ -1,10 +1,12 @@
 /**
  * Hi there. Good luck with your Electron app.
- * Please check out the module full documentation on Github
+ * Please check out the full documentation on npm / github
  *
+ * https://npmjs.com/package/electron-window-manager
+ * https://github.com/TamkeenLMS/electron-window-manager
+ * 
  * ~ zain
  * */
-
 'use strict';
 
 const Electron = require('electron');
