@@ -21,7 +21,7 @@ const isObject = obj => {
     return type === 'function' || type === 'object' && !!obj;
 };
 const isString = str => {
-    return toString.call(str) === '[object String]';
+    return Object.prototype.toString.call(str) === '[object String]';
 };
 
 /**
