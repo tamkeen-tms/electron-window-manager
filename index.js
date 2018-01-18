@@ -63,8 +63,8 @@ const Window = function(name, title, url, setupTemplate, setup, showDevTools){
     if(isString(setup) && setup.indexOf('x') >= 0){
         const dimensions = setup.split('x');
         setup = {
-            'width': parseInt(dimensions[0]),
-            'height': parseInt(dimensions[1])
+            'width': parseInt(dimensions[0], 10),
+            'height': parseInt(dimensions[1], 10)
         };
     }
 
@@ -173,6 +173,7 @@ Window.prototype.create = function(url) {
     if(!this.setup.resizable) this.setup.resizable = false;
     if(!this.setup.useContentSize) this.setup.useContentSize = true;
     if(!this.setup.x && !this.setup.y) this.setup.center = true;
+    if(!this.setup.destroyOnClose) this.setup.destroyOnClose = false;
 
     // Create the new browser window instance, with the passed setup
     this.object = new BrowserWindow(this.setup);
@@ -211,13 +212,15 @@ Window.prototype.create = function(url) {
         console.log('Window "' + instance.name + '" was closed');
 
         // Delete the reference on the windowManager object
-        //delete windowManager.windows[instance.name];
+        if(instance.setup.destroyOnClose) {
+            delete windowManager.windows[instance.name];
+        }
 
         // Delete the window object
         instance.object = null;
         instance = null;
     });
-    
+
     return this;
 };
 
@@ -1066,7 +1069,7 @@ const windowManager = {
         'watch': function(prop, callback){
             this.watcher.watch(this.data, prop, callback);
         },
-    
+
     /**
         * Unwatches the property in the shared data associated with the callback function
         * */

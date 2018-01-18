@@ -144,7 +144,7 @@ This method, as the name suggests, creates a new window, it will create and retu
 * **url** (string): The targeted URL for the window, it could be a local file (file:// ... .html), or a URL (http:// ...). If the passed value here starts with "/" the value will be preceded by the "appBase" (which is the path to the application base, set in the config), also you can use `{appBase}` inside the passed value and it will be replaced with the application base path.
 * **setupTemplate** (string) The name of setup template you want applied to this new window. "Setup Templates" is a way of sharing preset setup properties with more than one window.
 * **setup** (object|string) [optional] The new window setup. **The full options list is available [here](https://electronjs.org/docs/api/browser-window)**.This module offers couple more options to use in the mix, but we will get to that later. BTW, as a shortcut you can pass the new window dimensions like this "300x200", where 300 is the width and 200 is the height!
-* **showDevTools** (boolean) Whether to show the developer tools offered by Chrome or not, for debugging. False    by default.
+* **showDevTools** (boolean) Whether to show the developer tools offered by Chrome or not, for debugging. False by default.
 
 Here's an example:
 ```javascript
@@ -181,6 +181,7 @@ As mentioned, beside the the setup options `BrowserWindow` offers we offer coupl
 If you don't set this a default callback will handle it, by showing a global "Not available" message page, this global callback can be set in windowManager.init()
 
 * **showDevTools** (boolean) Whether to show the dev tools or not
+* **destroyOnClose** (boolean) Delete the reference on the windowManager object after the window was closed. False by default.
 
 ### `open( name, title, url, setupTemplate, setup, showDevTools )`
 This is the same as the `createNew` method, except that it opens the window directly. Returns a [Window Object](#class-window) on successfully opening a window.
