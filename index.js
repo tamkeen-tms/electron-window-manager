@@ -142,14 +142,12 @@ Window.prototype.create = function(url) {
     }
 
     // The title
-    {
-        if(!this.setup.title && config.defaultWindowTitle){
-            this.setup.title = config.defaultWindowTitle;
-        }
+    if(!this.setup.title && config.defaultWindowTitle){
+        this.setup.title = config.defaultWindowTitle;
+    }
 
-        if(this.setup.title && config.windowsTitlePrefix && !config.defaultWindowTitle){
-            this.setup.title = config.windowsTitlePrefix + this.setup.title;
-        }
+    if(this.setup.title && config.windowsTitlePrefix && !config.defaultWindowTitle){
+        this.setup.title = config.windowsTitlePrefix + this.setup.title;
     }
 
     // Handle the "position" feature/property
@@ -173,7 +171,6 @@ Window.prototype.create = function(url) {
     if(!this.setup.resizable) this.setup.resizable = false;
     if(!this.setup.useContentSize) this.setup.useContentSize = true;
     if(!this.setup.x && !this.setup.y) this.setup.center = true;
-    if(!this.setup.destroyOnClose) this.setup.destroyOnClose = false;
 
     // Create the new browser window instance, with the passed setup
     this.object = new BrowserWindow(this.setup);
@@ -212,9 +209,7 @@ Window.prototype.create = function(url) {
         console.log('Window "' + instance.name + '" was closed');
 
         // Delete the reference on the windowManager object
-        if(instance.setup.destroyOnClose) {
-            delete windowManager.windows[instance.name];
-        }
+        delete windowManager.windows[instance.name];
 
         // Delete the window object
         instance.object = null;
@@ -406,12 +401,12 @@ Window.prototype.close = function(){
 };
 
 /**
- * Destroys a the window instance
+ * Destroys the BrowserWindow and this instance
  * */
 Window.prototype.destroy = function(){
     this.object.destroy();
-    delete this;
     console.log('Window "' + this.name + '" was destroyed');
+    delete this;
 };
 
 /**
@@ -825,13 +820,13 @@ const windowManager = {
             // Attach some shortcuts
             Application.on('ready', function(){
 
-                // CTRL+F12 to toggle the dev tools
+                // Ctrl+F12 to toggle the dev tools
                 Shortcuts.register('CmdOrCtrl+F12', function(){
                     const window = windowManager.getCurrent();
                     if(window) window.toggleDevTools();
                 });
 
-                // CTRL+R to reload the page
+                // Ctrl+R to reload the page
                 Shortcuts.register('CmdOrCtrl+R', function(){
                     const window = windowManager.getCurrent();
                     if(window) window.reload();
@@ -871,7 +866,7 @@ const windowManager = {
 
         Object.keys(list).forEach(key => {
             let window = list[key];
-            windowManager.createNew(key, window.title, window.url, window.setupTemplate, window.setup);
+            this.createNew(key, window.title, window.url, window.setupTemplate, window.setup);
         });
     },
 
@@ -957,7 +952,7 @@ const windowManager = {
     },
 
     /**
-     * Destroy a window instance, by name
+     * Destroy a window instance by name
      * */
     'destroy': function(name){
         this.get(name).destroy();

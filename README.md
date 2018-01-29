@@ -81,7 +81,7 @@ Please go ahead and check out the module code and see for yourself how it all wo
 * **Each `BrowserWindow` instance is created inside the ["Window"](#class-window) class**, which in a way extends and adds more functionalities to it. 
 * When creating a new window you are required to provide a basic SETUP for it, stuff like the width, height, title, url ... etc. The setup options `BrowserWindow` offers are plenty, and this module adds couple more. **If some/many of the windows share the same setup, you can simply create a ["Setup Template"](#class-windowmanagertemplates) and pass this template (by name) to the window in the making to apply the setup**.
 * After a window is created you can change its content, resize it, move it, full screen it, ... pretty much anything you may need, even you can execute JS code on it, from another window ... cool ha!
-* A development-mode is on by default, until you finish developing the application and set it off. **The development mode will make debugging a bit easier; you will be able to reload ANY window just by pressing `CTRL + R`, also you will be able to toggle the development tools Chrome offers just by pressing `CTRL + F12`**, for any window and without any pre-configuration. The developer tools can be turned on by default for a window just by passing `showDevTools: true` in the window setup, or even by calling the method `showDevTools()` on the window object.
+* A development-mode is on by default, until you finish developing the application and set it off. **The development mode will make debugging a bit easier; you will be able to reload ANY window just by pressing `Ctrl + R`, also you will be able to toggle the development tools Chrome offers just by pressing `Ctrl + F12`**, for any window and without any pre-configuration. The developer tools can be turned on by default for a window just by passing `showDevTools: true` in the window setup, or even by calling the method `showDevTools()` on the window object.
 
 ---
 # API
@@ -180,8 +180,7 @@ As mentioned, beside the the setup options `BrowserWindow` offers we offer coupl
   ```
 If you don't set this a default callback will handle it, by showing a global "Not available" message page, this global callback can be set in windowManager.init()
 
-* **showDevTools** (boolean) Whether to show the dev tools or not
-* **destroyOnClose** (boolean) Delete the reference on the windowManager object after the window was closed. False by default.
+* **showDevTools** (boolean) Whether to show the dev tools or not.
 
 ### `open( name, title, url, setupTemplate, setup, showDevTools )`
 This is the same as the `createNew` method, except that it opens the window directly. Returns a [Window Object](#class-window) on successfully opening a window.
@@ -387,7 +386,7 @@ windowManager.layouts.add('default', '/layouts/default.html'); // The "/" at the
 ### `windowManager.layouts.get( name )`
 Fetches a layout by name
 
-## class: windowManager.sharedData
+## Class: windowManager.sharedData
 This class offers a simple way of sharing data between windows, you can simply set a value on window #1 and get it on window #2
 
 ### `windowManager.sharedData.data` 
@@ -427,7 +426,7 @@ watcher.unwatch( ... );
 ### `windowManager.sharedData.unwatch( prop, callback )`
 Stops watching for changes in the saved data.
 
-## class: windowManager.bridge
+## Class: windowManager.bridge
 > This is a simple feature to help you make your app more alive and connected windows-wise. You will be able to emit and listen to events inside the created windows.
 
 Here's an example:
@@ -642,13 +641,13 @@ Restores the window back in focus.
 Takes the window to fullscreen.
 
 ### `toggleDevTools( detached )`
-Toggles the developer tools. **By default, and when the `devMode` is on you can open the developer tools by pressing `CTRL + F12` on any window.**
+Toggles the developer tools. **By default, and when the `devMode` is on you can open the developer tools by pressing `Ctrl + F12` on any window.**
 * **detached** (boolean) [optioanl] Whether to open the devTools in a separate window or not
 
 ### `registerShortcut( accelerator, callback )`
 Registers a keyboard shortcut on the window
 ```javascript
-win.registerShortcut('CTRL+N', function(){
+win.registerShortcut('CmdOrCtrl+N', function(){
     windowManager.open( ... );
 });
 ```
