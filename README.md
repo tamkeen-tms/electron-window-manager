@@ -509,7 +509,12 @@ Stores the window name.
 Stores the window setup object.
 
 ### `Window.object`
-Stores the `BrowserWindow` instance created.
+Stores the `BrowserWindow` instance created, such that all electron-native methods can be used. 
+See [electron Window object docs](https://github.com/electron/electron/blob/master/docs/api/browser-window.md#instance-methods)
+```javascript
+win.object.setFullScreen(false)
+windowManager.get('win2').object.center()
+```
 
 ### `Window.set( prop, value )`
 Updates the window setup. You can either provide a property-value pair or pass an object to override the current setup.
