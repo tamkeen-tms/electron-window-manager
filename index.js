@@ -12,6 +12,7 @@
 const Electron = require('electron');
 const Application = Electron.app;
 const BrowserWindow = Electron.BrowserWindow;
+const Menu = Electron.Menu;
 const EventEmitter = new (require('events').EventEmitter);
 const FileSystem = require('fs');
 const WatchJS = require('melanke-watchjs');
@@ -195,7 +196,11 @@ Window.prototype.create = function(url) {
 
     // Set the window menu (null is valid to not have a menu at all)
     if(this.setup.menu !== undefined){
-        this.object.setMenu(this.setup.menu);
+        if(process.platform === 'darwin') {
+          Menu.setApplicationMenu(Menu.buildFromTemplate(this.setup.menu));
+        } else {
+          this.object.setMenu(this.setup.menu);
+        }
     }
 
     // Show the dev tools ?
