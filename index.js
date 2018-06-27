@@ -1026,6 +1026,22 @@ const windowManager = {
     },
 
     /**
+     * Show a window by name
+     * */
+    'show': function(name){
+        const win = (name) ? this.get(name) : this.getCurrent();
+        win.show();
+    },
+
+    /**
+     * Hide a window by name
+     * */
+    'hide': function(name){
+        const win = (name) ? this.get(name) : this.getCurrent();
+        win.hide();
+    },
+
+    /**
      * This method simply takes two values, the first is the one that goes when the development mode is on and
      * the other is when it's off, and according to whether it's on or off, the corresponding value will be returned
      * */
