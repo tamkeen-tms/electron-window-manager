@@ -1030,7 +1030,7 @@ const windowManager = {
      * */
     'show': function(name){
         const win = (name) ? this.get(name) : this.getCurrent();
-        win.show();
+        win.object.show();
     },
 
     /**
@@ -1038,7 +1038,7 @@ const windowManager = {
      * */
     'hide': function(name){
         const win = (name) ? this.get(name) : this.getCurrent();
-        win.hide();
+        win.object.hide();
     },
 
     /**
