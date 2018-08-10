@@ -577,7 +577,7 @@ const utils = {
 
     /**
      * Readies the passed URL for opening. If it starts with "/" it will be prefixed with the app directory
-     * path. Also if it contain "{appBase}", this value will be replaces with the app path too.
+     * path. Also if it contain "{appBase}", this value will be replaced with the app path too.
      * */
     'readyURL': function(url){
         if(url[0] === '/'){
@@ -797,20 +797,18 @@ const windowManager = {
      * @param config The configuration for the module
      * */
     'init': function(config){
-        // If the config object is provided
-        if(isObject(config)){
-            this.config = Object.assign(this.config, config);
-
-        }else if(isString(config)){
-            if(config.length && config[config.length-1] !== '/'){
-                config = config + '/';
-            }
+        
+        if(isString(config)){
             this.config.appBase = config;
+        }else if(isObject(config)){// If the config object is provided
+            this.config = Object.assign(this.config, config);
         }
 
         // If the app base isn't provided
         if(!this.config.appBase){
             this.config.appBase = utils.getAppLocalPath();
+        }else if(this.config.appBase.length && this.config.appBase[this.config.appBase.length-1] !== '/'){
+            this.config.appBase += '/';
         }
 
         // If the layouts list was passed in the config
