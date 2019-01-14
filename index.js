@@ -174,8 +174,10 @@
         console.log('Window "' + this.name + '" was created');
 
         // On load failure
-        this.object.webContents.on('did-fail-load', function(){
-            instance.down();
+        this.object.webContents.on('did-fail-load', function(event, errorCode, errorDescription, validatedURL, isMainFrame, frameProcessId, frameRoutingId){
+            if (isMainFrame) {
+                instance.down({event, errorCode, errorDescription, validatedURL, isMainFrame});
+            }
         });
 
         // If the width/height not provided!
@@ -313,7 +315,7 @@
      * Triggers the load-failure callback. This method is called whenever the targeted content isn't available or
      * accessible. It will display a custom message by default, unless you define a custom callback for the window
      * */
-    Window.prototype.down = function(){
+    Window.prototype.down = function(didFailParams){
         // Force ignore the layout!
         this.setup.layout = false;
 
@@ -321,7 +323,7 @@
         var callback = this.setup.onLoadFailure || windowManager.config.onLoadFailure;
 
         // Trigger the call back
-        callback.call(null, this);
+        callback.call(null, this, didFailParams);
     };
 
     /**
