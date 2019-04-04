@@ -427,7 +427,7 @@ Window.prototype.minimize = function(){
  * Maximizes/Unmaximizes the window
  * */
 Window.prototype.maximize = function(){
-    if(this.object.isMaximized()) this.object.restore();
+    if(this.object.isMaximized()) this.object.unmaximize();
     else this.object.maximize();
 
     return this;
