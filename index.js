@@ -424,11 +424,20 @@ Window.prototype.minimize = function(){
 };
 
 /**
- * Maximizes/Unmaximizes the window
+ * Maximizes the window
  * */
 Window.prototype.maximize = function(){
-    if(this.object.isMaximized()) this.object.unmaximize();
-    else this.object.maximize();
+    this.object.maximize();
+
+    return this;
+};
+
+/**
+ * Unmaximizes the window
+ * */
+
+Window.prototype.unmaximize = function(){
+    this.object.unmaximize();
 
     return this;
 };
@@ -1008,6 +1017,14 @@ const windowManager = {
         win.maximize();
     },
 
+    /**
+     * Unmaximize a window by name
+     * */
+    'unmaximize':function(name){
+        var win = (name) ? this.get(name) : this.getCurrent();
+        win.unmaximize();
+    },
+    
     /**
      * Minimize a window by name
      * */
