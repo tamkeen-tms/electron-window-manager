@@ -1074,7 +1074,7 @@ const windowManager = {
          * @param altValue The alternative value to return in case the passed key doesn't exist
          * */
         'fetch': function(key, altValue){
-            return this.data[key] ?this.data[key] :altValue;
+            return (this.data[key] !== undefined) ?this.data[key] :altValue;
         },
 
         /**
